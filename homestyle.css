@@ -1,0 +1,112 @@
+* {          /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  margin: 0; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  padding: 0; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  box-sizing: border-box; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-family: "Quicksand", sans-serif; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+html { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-size: 62.5%; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.container { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  width: 100%; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  height: 100vh; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  display: flex; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  justify-content: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  align-items: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.calendar { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  width: 45rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  height: 52rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  box-shadow: 0 0.5rem 3rem rgba(0, 0, 0, 0.4); /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.month { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  width: 100%; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  height: 12rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  display: flex; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  justify-content: space-between; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  align-items: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  padding: 0 2rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  text-align: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5); /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.month i { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-size: 2.5rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  cursor: pointer; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.month h1 { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-size: 3rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-weight: 400; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  text-transform: uppercase; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  letter-spacing: 0.2rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  margin-bottom: 1rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.month h2 {
+  font-size: 3rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-weight: 400; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  letter-spacing: 0.2rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  margin-bottom: 1rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.month p { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-size: 1.6rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.weekdays { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  width: 100%; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  height: 5rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  padding: 0 0.4rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  display: flex; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  align-items: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.weekdays div { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-size: 1.5rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-weight: 400; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  letter-spacing: 0.1rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  width: calc(44.2rem / 7); /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  display: flex; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  justify-content: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  align-items: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5); /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.days { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  width: 100%; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  display: flex; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  flex-wrap: wrap; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  padding: 0.2rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.days div { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  font-size: 1.4rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  margin: 0.3rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  width: calc(40.2rem / 7); /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  height: 5rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  display: flex; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  justify-content: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  align-items: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5); /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  transition: background-color 0.2s; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.days div:hover:not(.today) { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  background-color: #262626; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  border: 0.2rem solid #777; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  cursor: pointer; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.prev-date, /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+.next-date { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  opacity: 0.5; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
+
+.today { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  background-color: #167e56; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+}
