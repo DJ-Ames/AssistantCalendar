@@ -57,7 +57,8 @@ const renderCalendar = () => { // https://www.youtube.com/watch?v=o1yMqPyYeAo
   for (let i = 1; i <= lastDay; i++) { // https://www.youtube.com/watch?v=o1yMqPyYeAo
     if ( // https://www.youtube.com/watch?v=o1yMqPyYeAo
       i === new Date().getDate() && // https://www.youtube.com/watch?v=o1yMqPyYeAo
-      date.getMonth() === new Date().getMonth() // https://www.youtube.com/watch?v=o1yMqPyYeAo
+      date.getMonth() === new Date().getMonth() && // https://www.youtube.com/watch?v=o1yMqPyYeAo
+      date.getFullYear() === new Date().getFullYear() 
     ) {
       days += `<div class="today">${i}</div>`; // https://www.youtube.com/watch?v=o1yMqPyYeAo
     } else { // https://www.youtube.com/watch?v=o1yMqPyYeAo

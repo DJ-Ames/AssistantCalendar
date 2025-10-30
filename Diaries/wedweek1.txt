@@ -1,0 +1,9 @@
+Created a google doc containing a crow's foot diagram for my SQL table.
+Also added details on what each table is storing.
+Word Doc Below
+https://1drv.ms/w/c/f2447ec08a1f2c98/EVV6f6JcXXJDuhxWuVHuRFYB8kJ8RoVt5zPI96OQTDznKA?e=ObJQHi
+Database includes:
+User table for storing user data
+Prompt table for storing AI prompts
+Recurring Event table for storing Recurring event data. 
+Cache table to store data on which dates are affected by which recurring events. 

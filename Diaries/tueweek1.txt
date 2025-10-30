@@ -1,0 +1,169 @@
+I followed this video https://www.youtube.com/watch?v=o1yMqPyYeAo to create a dynamic calendar with HTML, CSS and Javascript 
+(I will put comments on which lines of code came from the video). 
+I then performed tests 1.1, 1.2 and 1.3. 
+1.2 and 1.3 failed because the calendar wouldn't show the year at all so I couldn't properly confirm anything. 
+I looked up the date methods from https://www.w3schools.com/jsref/jsref_obj_Date.asp 
+I used date.GetFullYear() to return the calendar year and to make the program only count today's date of this year as today. 
+The calendar then passed 1.1, 1.2 and 1.3. 
+
+Code Analysis of Javascript File Below
+
+The code below retrieves and stores the current date in a variable.
+_________________________________________________________________________
+const date = new Date(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+_________________________________________________________________________
+
+
+Defines a function
+_________________________________________________________________________
+const renderCalendar = () => { // https://www.youtube.com/watch?v=o1yMqPyYeAo
+_________________________________________________________________________
+
+Sets date variable at one to start at the first day of the month
+_________________________________________________________________________
+  date.setDate(1); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+_________________________________________________________________________
+
+Selects .days html class to insert the days of the month into it.
+_________________________________________________________________________
+  const monthDays = document.querySelector(".days"); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+_________________________________________________________________________
+
+
+The code below adds a day from the next month to follow the current month.
+_________________________________________________________________________
+  const lastDay = new Date( // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    date.getFullYear(), // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    date.getMonth() + 1, // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    0 // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  ).getDate(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  _________________________________________________________________________
+
+Finds the last day of the previous month.
+_________________________________________________________________________
+  const prevLastDay = new Date( // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    date.getFullYear(), // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    date.getMonth(), // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    0 // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  ).getDate(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  _________________________________________________________________________
+
+Finds the first weekday of a month.
+_________________________________________________________________________
+  const firstDayIndex = date.getDay(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  _________________________________________________________________________
+
+Finds the last weekday of a month
+_________________________________________________________________________
+
+  const lastDayIndex = new Date( // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    date.getFullYear(), // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    date.getMonth() + 1, // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    0 // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  ).getDay(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  _________________________________________________________________________
+
+Decides how many days to include from the next month in the last row by subtracting the day of the week by 7.
+_________________________________________________________________________
+  const nextDays = 7 - lastDayIndex - 1; // https://www.youtube.com/watch?v=o1yMqPyYeAo
+_________________________________________________________________________
+
+
+Javascript stores months as numbers instead of as names. So in order to list the months by name we have to create an array with the names.
+This is done in the code below.
+_________________________________________________________________________
+  const months = [ // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "January", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "February", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "March", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "April", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "May", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "June", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "July", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "August", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "September", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "October", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "November", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    "December", // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  ];
+______________________________________________________________________________
+
+Replaces h2 on the HTML page with the Month being viewed. Replaces p with a "Weekday Month Day Year" format. Replaces h1 with the full year.
+I added the year display and made it foremost. 
+_________________________________________________________________________
+
+  document.querySelector(".date h2").innerHTML = months[date.getMonth()]; // https://www.youtube.com/watch?v=o1yMqPyYeAo edited
+
+  document.querySelector(".date p").innerHTML = new Date().toDateString(); // https://www.youtube.com/watch?v=o1yMqPyYeAo edited
+
+  document.querySelector(".date h1").innerHTML = date.getFullYear(); 
+  _________________________________________________________________________
+
+
+string to hold the day numbers in the calendar.
+_________________________________________________________________________
+  let days = ""; // https://www.youtube.com/watch?v=o1yMqPyYeAo
+_________________________________________________________________________
+
+Adds some days from the previous month.
+_________________________________________________________________________
+  for (let x = firstDayIndex; x > 0; x--) { // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    days += `<div class="prev-date">${prevLastDay - x + 1}</div>`; // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  } 
+_________________________________________________________________________
+
+
+
+The code below checks the day stored in i against the current day, current month and current year. 
+If day month and year equal i then that day in the calendar is given the div class "today" and highlighted as per the CSS File
+Otherwise the day remains normal.
+I added the code "date.getFullYear() === new Date().getFullYear()" 
+using the getFullYear property I learned from https://www.w3schools.com/jsref/jsref_obj_Date.asp
+  _________________________________________________________________________
+  for (let i = 1; i <= lastDay; i++) { // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    if ( // https://www.youtube.com/watch?v=o1yMqPyYeAo
+      i === new Date().getDate() && // https://www.youtube.com/watch?v=o1yMqPyYeAo
+      date.getMonth() === new Date().getMonth() && // https://www.youtube.com/watch?v=o1yMqPyYeAo
+      date.getFullYear() === new Date().getFullYear() 
+    ) {
+      days += `<div class="today">${i}</div>`; // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    } else { // https://www.youtube.com/watch?v=o1yMqPyYeAo
+      days += `<div>${i}</div>`; // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    }
+  }
+  _________________________________________________________________________
+
+
+
+Adds some days to the end of the calendar from the previous month.
+  _________________________________________________________________________
+  for (let j = 1; j <= nextDays; j++) { // https://www.youtube.com/watch?v=o1yMqPyYeAo
+    days += `<div class="next-date">${j}</div>`; // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  }
+  monthDays.innerHTML = days; // https://www.youtube.com/watch?v=o1yMqPyYeAo
+};
+  _________________________________________________________________________
+
+
+
+The code below makes the calendar render again when the previous button is pressed. The calendar then renders the last month.
+  _________________________________________________________________________
+
+document.querySelector(".prev").addEventListener("click", () => { // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  date.setMonth(date.getMonth() - 1); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  renderCalendar(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+});
+
+The code below makes the calendar render again when the next button is pressed. The calendar then renders the next month.
+  _________________________________________________________________________
+document.querySelector(".next").addEventListener("click", () => { // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  date.setMonth(date.getMonth() + 1); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+  renderCalendar(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+});
+_________________________________________________________________________
+
+
+Calls the previously made function
+_________________________________________________________________________
+renderCalendar(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
+_________________________________________________________________________
