@@ -1,0 +1,6 @@
+Looked through some HTML and CSS guides since it's been awhile.
+Decided on modals for my sign in page
+https://www.w3schools.com/w3css/w3css_modal.asp
+https://www.youtube.com/watch?v=6ophW7Ask_0
+I tried tweaking an experimenting with the current CSS code but I wasn't really satisfied with anything I picked.
+Wound up changing the font-sizse percentage to 80% because that was the only thing I did that kept the month boxes scaled well.

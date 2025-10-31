@@ -1,5 +1,9 @@
 const date = new Date(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
 
+function ShowRibbon() {
+
+};
+
 const renderCalendar = () => { // https://www.youtube.com/watch?v=o1yMqPyYeAo
   date.setDate(1); // https://www.youtube.com/watch?v=o1yMqPyYeAo
 
