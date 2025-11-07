@@ -15,9 +15,8 @@
     /> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
   </head>
   <body>
-    <header>
-      <!-- add sign in modal here? -->
-    </header>
+    <div id="userInfo" class="user-info"></div> <!-- ChatGPT. Container to display username after sign in-->
+    <button class="open-modal-btn" id="openSignIn">Sign In</button> <!-- ChatGPT. Creates the button element that opens the sign in modal -->
     <div class="ribbon">
       <button class="RibbonClip" onclick="ShowRibbon">>>></button>
       <button class="Help" onclick="help.html">?</button>
@@ -25,6 +24,49 @@
     <div class="notes">
       
     </div>
+    <div class="modal-overlay" id="modalOverlay" aria-hidden="true"></div> <!-- ChatGPT. creates a background over the rest of the screen when the modal is open-->
+    <div class="modal" id="signInModal" aria-hidden="true"> <!-- ChatGPT. Main Modal Container -->
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="signin-title"> <!-- ChatGPT. Modal container that allows for the structure of the modal-->
+      <div class="modal-header"> <!-- ChatGPT. Initiates header -->
+        <div class="modal-title" id="signin-title">Sign in</div> <!-- ChatGPT. "Sign in" Title-->
+        <button class="modal-close" id="closeSignIn" aria-label="Close (Esc)"> <!-- ChatGPT. Cross button that cancels sign in modal -->
+          <i class="fas fa-times"></i> <!-- ChatGPT. The exit symbol -->
+        </button> <!-- ChatGPT -->
+      </div> <!-- ChatGPT -->
+
+      <form class="modal-body" id="signinForm" novalidate> <!-- ChatGPT. Creates the area of the modal where you enter your sign in information -->
+        <div class="field"> <!-- ChatGPT. Creates the container for the username input. -->
+          <label class="label" for="username">Username</label> <!-- ChatGPT. Displays "Username" -->
+          <div class="input-wrap"> <!-- ChatGPT. Contains the input for styling purposes -->
+            <input class="input" id="username" name="username" type="text" autocomplete="username" required /> <!-- ChatGPT. Username input box. Cannot be empty. Allows browser to autocomplete password.  -->
+          </div> <!-- ChatGPT -->
+          <div class="helper">Enter the username you registered with.</div> <!-- ChatGPT. Text beneath the textbox -->
+        </div> <!-- ChatGPT -->
+
+        <div class="field"> <!-- ChatGPT. Container for password input. -->
+          <label class="label" for="password">Password</label> <!-- ChatGPT. Displays "password" -->
+          <div class="input-wrap"> <!-- ChatGPT. Styling for the password box -->
+            <input class="input" id="password" name="password" type="password" autocomplete="current-password" required /> <!-- ChatGPT. Password input box. "type='password'" keeps the input hidden -->
+            <button type="button" class="eye-icon" id="togglePwd" aria-label="Show password"> <!-- ChatGPT. Creates a button to show the password and an ID for javascript to use -->
+              <i class="far fa-eye"></i> <!-- ChatGPT. Eye icon -->
+            </button> <!-- ChatGPT -->
+          </div> <!-- ChatGPT -->
+          <div class="helper">Minimum 8 characters.</div> <!-- ChatGPT. Text beneath the textbox -->
+        </div> <!-- ChatGPT -->
+
+        <div class="actions"> <!-- ChatGPT. Formats the sign in button -->
+          <button type="submit" class="btn primary">Sign in</button> <!-- ChatGPT. Button to submit informationg. making it primary gives it color.  -->
+        </div> <!-- ChatGPT -->
+
+      </form> <!-- ChatGPT -->
+
+      <div class="create-cta"> <!-- ChatGPT. Container for the create account link -->
+        <small>New here?</small> <!-- ChatGPT. Says, "new here?" above the sign in button-->
+        <a class="link-btn" href="createaccount.html" id="createAccountLink"> <!-- ChatGPT. Links to the create account page -->
+          Create new account </a> <!-- ChatGPT. Button Text -->
+      </div> <!-- ChatGPT -->
+    </div> <!-- ChatGPT -->
+  </div> <!-- ChatGPT -->
     <div class="container"> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
       <div class="calendar"> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
         <div class="month"> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->

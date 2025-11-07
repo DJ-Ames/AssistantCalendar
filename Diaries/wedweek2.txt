@@ -1,0 +1,222 @@
+Analyzed all of the code ChatGPT gave me yesterday and integrated it into the system. Had to remove the second cancel button. 
+
+HTML AI code:
+
+The code below is used to create a sign in button and a username display above the sign in button.
+_________________________________________________________________________
+<div id="userInfo" class="user-info"></div> <!-- ChatGPT Container to display username after sign in-->
+<button class="open-modal-btn" id="openSignIn">Sign In</button> <!-- ChatGPT Creates the button element that opens the sign in modal -->
+_________________________________________________________________________
+
+Creates a background whenever the sign in modal opens. Covers the entire home screen.
+Aria hidden prevents the modal from being read by screen readers when unopened.
+_________________________________________________________________________
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true"></div> <!-- ChatGPT -->
+_________________________________________________________________________
+
+
+    <div class="modal" id="signInModal" aria-hidden="true"> <!-- ChatGPT. Main Modal Container-->
+
+    The code below provides a container so that the modal's structure can be made on CSS.
+    _________________________________________________________________________
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="signin-title"> <!-- ChatGPT -->
+    _________________________________________________________________________
+
+    The header section of the Modal. Contains the title and the cancel button. Formats the cancel button to be an x. 
+    _________________________________________________________________________
+      <div class="modal-header"> <!-- ChatGPT -->
+        <div class="modal-title" id="signin-title">Sign in</div> <!-- ChatGPT -->
+        <button class="modal-close" id="closeSignIn" aria-label="Close (Esc)"> <!-- ChatGPT -->
+          <i class="fas fa-times"></i> <!-- ChatGPT -->
+        </button> <!-- ChatGPT -->
+      </div> <!-- ChatGPT -->
+      _________________________________________________________________________
+
+
+      This block of code sets up the sign in textbox. Specifically this covers the username textbox.
+      It contains text over and under the textbox and in the textbox itself the user can input their username. 
+      Inputting in the text box is required and the user can autocomplete the username box if they chose to.
+      _________________________________________________________________________
+
+      <form class="modal-body" id="signinForm" novalidate> <!-- ChatGPT. Creates the area of the modal where you enter your sign in information -->
+        <div class="field"> <!-- ChatGPT. Creates the container for the username input. -->
+          <label class="label" for="username">Username</label> <!-- ChatGPT. Displays "Username" -->
+          <div class="input-wrap"> <!-- ChatGPT. Contains the input for styling purposes -->
+            <input class="input" id="username" name="username" type="text" autocomplete="username" required /> <!-- ChatGPT. Username input box. Cannot be empty. Allows browser to autocomplete password.  -->
+          </div> <!-- ChatGPT -->
+          <div class="helper">Enter the username you registered with.</div> <!-- ChatGPT. Text beneath the textbox -->
+        </div> <!-- ChatGPT -->
+_________________________________________________________________________
+
+  This block of code is for containing the password textbox. 
+_________________________________________________________________________
+        <div class="field"> <!-- ChatGPT. Container for password input. -->
+          <label class="label" for="password">Password</label> <!-- ChatGPT. Displays "password" -->
+          <div class="input-wrap"> <!-- ChatGPT. Styling for the password box -->
+            <input class="input" id="password" name="password" type="password" autocomplete="current-password" required /> <!-- ChatGPT. Password input box. "type='password'" keeps the input hidden -->
+            <button type="button" class="end-icon" id="togglePwd" aria-label="Show password"> <!-- ChatGPT. Creates a button to show the password and an ID for javascript to use -->
+              <i class="far fa-eye"></i> <!-- ChatGPT. Eye icon -->
+            </button> <!-- ChatGPT -->
+          </div> <!-- ChatGPT -->
+          <div class="helper">Minimum 8 characters.</div> <!-- ChatGPT. Text beneath the textbox -->
+        </div> <!-- ChatGPT -->
+_________________________________________________________________________
+
+This code holds and gives an id to format the cancel and sign in buttons.
+It makes the sign in button more noticable by making it more colorful with "btn primary"
+_________________________________________________________________________
+        <div class="actions"> <!-- ChatGPT. Formats the cancel and sign in buttons -->
+          <button type="button" class="btn ghost" id="cancelBtn">Cancel</button> <!-- ChatGPT. Button to close modal. btn ghost makes it transparent. Gives it an id for Javascript to use. -->
+          <button type="submit" class="btn primary">Sign in</button> <!-- ChatGPT. Button to submit informationg. making it primary gives it color.  -->
+        </div> <!-- ChatGPT -->
+_________________________________________________________________________
+
+Text only screen readers can read. Will tell the screen reader whether a sign in succeeds or not
+_________________________________________________________________________
+        <p class="sr-only" role="status" aria-live="polite" id="formStatus"></p> <!-- ChatGPT. A paragraph that only screen readers can use. Reads messages about sign in success -->
+_________________________________________________________________________
+
+
+        <div class="divider"><span>or</span></div> <!-- ChatGPT. Creates a line with 'or' in the middle -->
+      </form> <!-- ChatGPT -->
+
+This code creates the link to the create account page
+_________________________________________________________________________
+      <div class="create-cta"> <!-- ChatGPT. Container for the create account link -->
+        <small>New here?</small> <!-- ChatGPT. Says, "new here?" above the sign in button-->
+        <a class="link-btn" href="createaccount.html" id="createAccountLink"> <!-- ChatGPT. Links to the create account page -->
+          Create new account </a> <!-- ChatGPT. Button Text -->
+      </div> <!-- ChatGPT -->
+    </div> <!-- ChatGPT -->
+  </div> <!-- ChatGPT -->
+  _________________________________________________________________________
+
+  AI CSS code:
+
+This code makes custom properties that can be used again later. 
+  _________________________________________________________________________
+  :root{ /* ChatGPT. Setting up custom properties */
+      --modal-bg:#ffffff; /* ChatGPT Sets modal background as white*/
+      --overlay: rgba(0,0,0,.55); /* ChatGPT */
+      --text:#1f2937; /* ChatGPT. Sets the text color*/
+      --primary:#7a9be3; /* ChatGPT. Sets the color of primary buttons */
+      --primary-hover:#1d4ed8; /* ChatGPT. Changes color of primary buttons when hovered */
+      --muted:#6b7280; /* ChatGPT. Makes secondary text gray */
+      --ring:#93c5fd; /* ChatGPT. Sets the color of the outline when you select a textbox */
+      --radius:16px; /* ChatGPT. Sets radius to 16px */
+    } /* ChatGPT */
+      _________________________________________________________________________
+
+This code styles the sign in button that's visible on the home screen.
+      _________________________________________________________________________
+.open-modal-btn{ /* ChatGPT. Style for the sign in button on the home screen */
+      appearance:none; /* ChatGPT. Removes styles */
+      border:0; /* ChatGPT. Removes the border */
+      cursor:pointer; /* ChatGPT. Removes styles */
+      background:var(--primary);color:#fff; /* ChatGPT. Sets the button color to the same as the primary property. Makes text white. */
+      padding:.9rem 1.15rem; /* ChatGPT. Creates spacing between the text and the end of the button, vertically and horizontally */
+      border-radius:12px; /* ChatGPT. Creates a round corner around the sign in button. */
+      font-weight:600; /* ChatGPT. Bolds text a bit */
+      margin:.9rem 10rem; /* ChatGPT. I changed the margin. Distance between the button and the top + side of the screen*/
+      float: right /* I moved it to the right */
+    } 
+    .open-modal-btn:hover{ background:var(--primary-hover) } /* ChatGPT. Sign in button is darker when cursor is on it. */
+      _________________________________________________________________________
+
+  The code below styles the overlay to appear behind the modal and stay invisible until activation. It also makes it cover the whole page
+_________________________________________________________________________
+      .modal-overlay{ /* ChatGPT. Styles the page behind the modal when the modal is open */
+      position:fixed; /* ChatGPT. Keeps the overlay in place when the page is scrolled */
+      inset:0; /* ChatGPT. Centers overlay */
+      background:var(--overlay); /* ChatGPT. Makes the overlay black but also somewhat transparent by using the custom property */
+      display:none; /* ChatGPT. Hides the element */
+      opacity:0; /* ChatGPT. Makes the element entirely transparent */
+      transition:opacity .2s ease; /* ChatGPT. Makes the transition to the overlay screen take .2 seconds to make it more gradual */
+      z-index:999; /* ChatGPT. Sets the order that the overlay is stacked. */
+    } /* ChatGPT */
+    .modal-overlay.active{ display:block; opacity:1 } /* ChatGPT. When activated the overlay is displayed and is no longer invisible. */
+_________________________________________________________________________
+
+Centers the sign in panel. Also keeps it's content from being clicked while it is inactive.
+_________________________________________________________________________
+.modal{ /* ChatGPT. Styles sign in panel's position */
+      position:fixed; /* ChatGPT. Panel stays in place when screen scrolls */
+      inset:0; /* ChatGPT. Centers modal */
+      display:grid; /* ChatGPT. Formats element by grid */
+      place-items:center; /* ChatGPT. Centers element on the grid */
+      pointer-events:none; /* ChatGPT. Cannot be interacted with until activated */
+      z-index:1000; /* ChatGPT. Sets the order that the modal is stacked. Puts it above the overlay. */
+    }
+    .modal.active{ pointer-events:auto } /* ChatGPT. Allows the content of the modal to be interacted with when the modal is active */
+    _________________________________________________________________________
+
+Styles the size of the sign in panel. Keeps the sign in panel invisible until it is needed.
+_________________________________________________________________________
+    .modal-card{ /* ChatGPT. Styles the sign in panel */
+      width:min(92vw, 420px); /* ChatGPT. 420px max width. Minimum width 92% of screen */
+      background:var(--modal-bg); /* ChatGPT. Sets a white background. */
+      opacity:0; /* ChatGPT. Keeps invisible by default */
+      transition:opacity .22s ease; /* ChatGPT. Makes the panel take .22 seconds to fade into view */
+      overflow:hidden; /* ChatGPT. Anything that overflows beyond the sign in panel is kept invisible.*/
+    }
+    .modal.active .modal-card{ /* ChatGPT. For when the sign in page is active*/
+      opacity:1; /* ChatGPT. Sign in page becomes visible */
+    }
+    _________________________________________________________________________
+
+Formats the modal's header
+_________________________________________________________________________
+    .modal-header{ /* ChatGPT */
+      display:flex; /* ChatGPT. Sets header to flex container */
+      align-items:center; /* ChatGPT. Keeps everything in the flex display to the center */
+      justify-content:space-between; /* ChatGPT. Puts space in between everything in the flex container */
+      padding:1.1rem 1.2rem 0.8rem 1.2rem; /* ChatGPT. top, right, bottom, left padding*/
+    }
+    _________________________________________________________________________
+
+
+The two items in the header. The title and the close button. I made the close button bigger and red.
+_________________________________________________________________________
+    .modal-title{ /* ChatGPT. For the title in the modal header */
+      font-size:1.25rem; /* ChatGPT. Sets font size */
+      font-weight:700; /* ChatGPT. Bolds letters*/
+      letter-spacing:.2px; /* ChatGPT. The spacing between each letter in the header */
+    }
+
+    .modal-close{ /* . For the close button in the modal header */
+      appearance:none; /* ChatGPT. Removes default style */
+      border:0; /* ChatGPT. Removes default border */
+      background:transparent; /* ChatGPT. Hides background behind close button */
+      cursor:pointer; /* ChatGPT. Turns mouse into a pointer over the close button */
+      font-size:1.5rem; /* ChatGPT. Changes size of button */
+      padding:.3rem; /* ChatGPT. Blank space around the x button */
+      color:#e70a0a; /* I set it to be red instead of --mute */
+    }
+    _________________________________________________________________________
+
+    .modal-body{ padding:0 1.2rem 1rem 1.2rem } /* ChatGPT. Pads around the body of the modal to add more white space. */
+    
+    .field{ margin:.75rem 0 } /* ChatGPT. Adds vertical spacing around the input boxes */
+
+
+Labels above the input boxes
+________________________________________________________________________ 
+.label{ /* ChatGPT. Labels above the input boxes */
+      display:block; /* ChatGPT. Sets display to vertical block*/
+      font-size:.95rem; /* ChatGPT. Sets font size */
+      margin-bottom:.35rem; /* ChatGPT. Puts a white space between the label and text box*/
+      font-weight:600 /* ChatGPT. Bolds the label */
+    } /* ChatGPT */
+    ________________________________________________________________________
+
+    Positions the input boxes and the reveal symbol
+    ________________________________________________________________________
+
+    .input-wrap{ /* ChatGPT. Formats the wrapper of the input boxes and the reveal symbol */
+      position:relative; /* ChatGPT. Positions the symbol offset from the textbox */
+      background:#fff; /* ChatGPT. Sets white background */
+      border:1.5px solid #b7b8ba; /* ChatGPT. Sets the border of the input box */
+      display:flex; /* ChatGPT. Set to side by side display */
+      align-items:center; /* ChatGPT. Centers the input box and reveal symbol */
+    }
+    ________________________________________________________________________

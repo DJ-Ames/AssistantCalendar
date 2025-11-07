@@ -110,3 +110,182 @@ html { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
 .today { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   background-color: #167e56; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
 }
+
+:root{ /* ChatGPT. Setting up custom properties */
+      --modal-bg:#ffffff; /* ChatGPT Sets modal background as white*/
+      --overlay: rgba(0,0,0,.55); /* ChatGPT. A somewhat transparent black color */
+      --text:#1f2937; /* ChatGPT. Sets the text color*/
+      --primary:#7a9be3; /* ChatGPT. Sets the color of primary buttons */
+      --primary-hover:#1d4ed8; /* ChatGPT. Changes color of primary buttons when hovered */
+      --muted:#6b7280; /* ChatGPT. Makes secondary text and icons gray */
+      --ring:#93c5fd; /* ChatGPT. Sets the color of the outline when you select a textbox */
+    } /* ChatGPT */
+
+
+    .open-modal-btn{ /* ChatGPT. Style for the sign in button on the home screen */
+      appearance:none; /* ChatGPT. Removes styles */
+      border:0; /* ChatGPT. Removes the border */
+      cursor:pointer; /* ChatGPT. Removes styles */
+      background:var(--primary);color:#fff; /* ChatGPT. Sets the button color to the same as the primary property. Makes text white. */
+      padding:.9rem 1.15rem; /* ChatGPT. Creates spacing between the text and the end of the button, vertically and horizontally */
+      border-radius:12px; /* ChatGPT. Creates a round corner around the sign in button. */
+      font-weight:600; /* ChatGPT. Bolds text a bit */
+      margin:.9rem 10rem; /* ChatGPT. I changed the margin. Distance between the button and the top + side of the screen*/
+      float: right; /* I moved it to the right */
+    } 
+    .open-modal-btn:hover{ background:var(--primary-hover) } /* ChatGPT. Sign in button is darker when cursor is on it. */
+
+    .modal-overlay{ /* ChatGPT. Styles the page behind the modal when the modal is open */
+      position:fixed; /* ChatGPT. Keeps the overlay in place when the page is scrolled */
+      inset:0; /* ChatGPT. Centers overlay */
+      background:var(--overlay); /* ChatGPT. Makes the overlay black but also somewhat transparent by using the custom property */
+      display:none; /* ChatGPT. Hides the element */
+      opacity:0; /* ChatGPT. Makes the element entirely transparent */
+      transition:opacity .2s ease; /* ChatGPT. Makes the transition to the overlay screen take .2 seconds to make it more gradual */
+      z-index:999; /* ChatGPT. Sets the order that the overlay is stacked. */
+    } /* ChatGPT */
+    .modal-overlay.active{ display:block; opacity:1 } /* ChatGPT. When activated the overlay is displayed and is no longer invisible. */
+
+
+    .modal{ /* ChatGPT. Styles sign in panel's position */
+      position:fixed; /* ChatGPT. Panel stays in place when screen scrolls */
+      inset:0; /* ChatGPT. Centers modal */
+      display:grid; /* ChatGPT. Formats element by grid */
+      place-items:center; /* ChatGPT. Centers element on the grid */
+      pointer-events:none; /* ChatGPT. Cannot be interacted with until activated */
+      z-index:1000; /* ChatGPT. Sets the order that the modal is stacked. Puts it above the overlay. */
+    }
+    .modal.active{ pointer-events:auto } /* ChatGPT. Allows the content of the modal to be interacted with when the modal is active */
+
+    .modal-card{ /* ChatGPT. Styles the sign in panel */
+      width:min(92vw, 420px); /* ChatGPT. 420px max width. Minimum width 92% of screen */
+      background:var(--modal-bg); /* ChatGPT. Sets a white background. */
+      opacity:0; /* ChatGPT. Keeps invisible by default */
+      transition:opacity .22s ease; /* ChatGPT. Makes the panel take .22 seconds to fade into view */
+      overflow:hidden; /* ChatGPT. Anything that overflows beyond the sign in panel is kept invisible.*/
+    }
+    .modal.active .modal-card{ /* ChatGPT. For when the sign in page is active*/
+      opacity:1; /* ChatGPT. Sign in page becomes visible */
+    }
+
+    .modal-header{ /* ChatGPT */
+      display:flex; /* ChatGPT. Sets header to flex container */
+      align-items:center; /* ChatGPT. Keeps everything in the flex display to the center */
+      justify-content:space-between; /* ChatGPT. Puts space in between everything in the flex container */
+      padding:1.1rem 1.2rem 0.8rem 1.2rem; /* ChatGPT. top, right, bottom, left padding*/
+    }
+
+    .modal-title{ /* ChatGPT. For the title in the modal header */
+      font-size:1.25rem; /* ChatGPT. Sets font size */
+      font-weight:700; /* ChatGPT. Bolds letters*/
+      letter-spacing:.2px; /* ChatGPT. The spacing between each letter in the header */
+    }
+
+    .modal-close{ /* . For the close button in the modal header */
+      appearance:none; /* ChatGPT. Removes default style */
+      border:0; /* ChatGPT. Removes default border */
+      background:transparent; /* ChatGPT. Hides background behind close button */
+      cursor:pointer; /* ChatGPT. Turns mouse into a pointer over the close button */
+      font-size:1.5rem; /* ChatGPT. Changes size of button */
+      padding:.3rem; /* ChatGPT. Blank space around the x button */
+      color:#e70a0a; /* I set it to be red instead of --mute */
+    }
+
+    .modal-body{ padding:0 1.2rem 1rem 1.2rem } /* ChatGPT. Pads around the body of the modal to add more white space. */
+
+    .field{ margin:.75rem 0 } /* ChatGPT. Adds vertical spacing around the input boxes */
+
+    .label{ /* ChatGPT. Labels above the input boxes */
+      display:block; /* ChatGPT. Sets display to vertical block*/
+      font-size:.95rem; /* ChatGPT. Sets font size */
+      margin-bottom:.35rem; /* ChatGPT. Puts a white space between the label and text box*/
+      font-weight:600 /* ChatGPT. Bolds the label */
+    } /* ChatGPT */
+
+    .input-wrap{ /* ChatGPT. Formats the wrapper of the input boxes and the reveal symbol */
+      position:relative; /* ChatGPT. Positions the symbol offset from the textbox */
+      background:#fff; /* ChatGPT. Sets white background */
+      border:1.5px solid #b7b8ba; /* ChatGPT. Sets the border of the input box */
+      display:flex; /* ChatGPT. Set to side by side display */
+      align-items:center; /* ChatGPT. Centers the input box and reveal symbol */
+    }
+
+    .input{ /* ChatGPT. Format for the input text */
+      width:100%; /* ChatGPT. Sets width */
+      border:0; /* ChatGPT. Removes any borders */
+      outline:0; /* ChatGPT. Removes any outlines */
+      padding:0.85rem 1rem; /* ChatGPT. Blanks space above and beside input text */
+      font-size:1rem; /* ChatGPT. Sets font */
+      background:transparent /* ChatGPT. Keeps background clear */
+    }
+
+    .input-wrap:focus-within{ 
+      border-color:var(--ring); /* ChatGPT. Sets the color of the border when the text inputs are clicked. */
+    } 
+
+    .eye-icon{ /* ChatGPT. Styles the reveal password symbol.*/
+      position:absolute; /* ChatGPT. Positions icon in the text box */
+      right:.65rem; /* ChatGPT. Sets the icon on the right side */
+      top:50%; /* ChatGPT. Centers symbol. Top of symbol goes to 50% of container */
+      transform:translateY(-50%); /* ChatGPT. Centers symbol by moving it up 50% of height */
+      background:transparent; /* ChatGPT. Hides background */
+      border:0; /* ChatGPT. Removes any border */
+      cursor:pointer; /* ChatGPT. Hovering turns mouse into click icon */
+      color:var(--muted); /* ChatGPT. Sets the color of the icon */
+      font-size:1rem; /* ChatGPT. size of icon */
+      padding:.35rem; /* ChatGPT Blank space around icon*/
+    }
+
+    .helper{ /* ChatGPT. Changes secondary text that's below the input boxes */
+      margin-top:.35rem; /* ChatGPT. Blank space added above the text */
+      color:var(--muted); /* ChatGPT. Sets color */
+      font-size:.85rem; /* ChatGPT. Shrinks the font size */
+    }
+
+    .actions{ /* ChatGPT. Row with the submit button*/
+      display:flex; /* ChatGPT. Displays the button across the entire area */
+      margin-top:1rem; /* ChatGPT. Provides extra blank space above the button */
+      margin-bottom:3rem;
+    }
+
+    .btn{ /* ChatGPT. Styles the submit button */
+      flex:1; /* ChatGPT. Allows button to shrink and grow depending on how much width is available */
+      appearance:none; /* ChatGPT. Removes any styles */
+      border:0; /* ChatGPT. Removes any external borders */
+      cursor:pointer; /* ChatGPT. Turns mouse into a pointer when hovering */
+      padding:.85rem 1rem; /* ChatGPT. Pads space around the button's font */
+      font-weight:700; /* ChatGPT. Bolds font */
+    }
+    .btn.primary{ /* ChatGPT. Buttons listed as primary */
+      background:var(--primary); /* ChatGPT. Sets button background color */
+      color:#fff /* ChatGPT. Sets text color */
+      } /* ChatGPT */
+    .btn.primary:hover{ background:var(--primary-hover) } /* ChatGPT. Changes background color when primary buttons are hovered. */
+
+    .create-cta{ /* ChatGPT. Style for the container with the link to create an account */
+      display:flex; flex-direction:column; /* ChatGPT. Stacks the items vertically */
+      gap:.6rem; /* ChatGPT. Space between the items of the container */
+      padding:0 1.2rem 1.2rem 1.2rem; /* ChatGPT. Padding around the container */
+      background:#fafafa /* ChatGPT. Sets background to a slightly shaded white */
+    }
+    .create-cta small{ color:var(--muted) } /* ChatGPT. Changes the color of the text above the create account link */
+    .create-cta .link-btn{ /* ChatGPT. Changes the appearance of the page link button */
+      appearance:none; /* ChatGPT. Removes any external styling */
+      border:1px solid #e5e7eb; /* ChatGPT. Creates a border for the button */
+      background:#fff; /* ChatGPT. Color of the buttons background */
+      color:#111827; /* ChatGPT. Font color for the button */
+      padding:.85rem 1rem; /* ChatGPT. Blank space around the button's font */
+      font-weight:700; /* ChatGPT. Bolds the font */
+      text-align:center; /* ChatGPT. Centers text */
+      cursor:pointer /* ChatGPT. Turns mouse into a pointer finger whenever it hovers over the button */
+    } 
+    .link-btn:hover{ background:#9ef6fc } /* ChatGPT. Changes background color whenever hovered over. */
+
+    .user-info { /* ChatGPT. For displaying a signed in username */
+  font-family: "Quicksand", sans-serif; /* ChatGPT. Primarily uses the Quicksand font or if unavailable sans-serif */
+  font-weight: 600; /* ChatGPT. Makes text bolder */
+  color: #1f2937; /* ChatGPT. Sets the color of the text */
+  text-align: center; /* ChatGPT. Centers the text */
+  margin-top: 2rem; /* ChatGPT. Puts blank space above the text */
+  font-size: 1.2rem; /* ChatGPT. Sets the font size of the username text. */
+}
