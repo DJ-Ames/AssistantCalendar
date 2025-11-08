@@ -115,10 +115,6 @@ renderCalendar(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
       if (e.key === 'Escape') closeModal(); // ChatGPT. The e value reaches escape then the modal is closed.
     }; // ChatGPT
 
-   
-
-
-
     togglePwd.addEventListener('click', () => { // ChatGPT. When the show password button is pressed
       const isHidden = password.type === 'password'; // ChatGPT. Determines whether or not an input is in password mode. Stores whether it is or isn't.
       password.type = isHidden ? 'text' : 'password'; // ChatGPT. If the password type is in clear text switches to the password mode. Otherwise switches to text
@@ -144,3 +140,37 @@ renderCalendar(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
         password.focus(); // ChatGPT. Focuses on the password box so it can be rewritten.
         return; // ChatGPT. stops
       } // ChatGPT
+
+      // sign in call
+
+      currentUser = user;          // ChatGPT. Stores the input and trimmed username.
+      updateUserDisplay();         // ChatGPT. Calls function to display to show the sign out button and the username
+      closeModal(); // ChatGPT. Calls function to close the modal
+    }); // ChatGPT
+
+
+let currentUser = null; // ChatGPT. The variable that tracks the input username
+
+
+function updateUserDisplay() { // ChatGPT. Function to change the user display after someone signs in
+  if (currentUser) { // ChatGPT. An if statement that works whenever someone is logged in
+    userInfo.innerHTML = `
+      Welcome, <strong>${currentUser}</strong> 
+      <br /> 
+      <button id="signOutBtn" class="btn ghost" style="margin-top:8px;">Sign Out</button>
+    `; // ChatGPT. Changes the userinfo divider to display the string above. Also adds a sign out button.
+
+    openBtn.style.display = "none"; // ChatGPT. Hides the sign in button whenever someone is logged in. 
+
+    document.getElementById('signOutBtn').addEventListener('click', () => { // ChatGPT. Whenever signout button is clicked
+      currentUser = null; // ChatGPT. Removes the current user from the variable.
+      updateUserDisplay(); // ChatGPT. Returns to being signed out
+    });
+  } else { // ChatGPT. When no one is signed in
+    userInfo.textContent = ""; // ChatGPT. Gets rid of the welcome message.
+    openBtn.style.display = "inline-block"; // ChatGPT. Allows the sign in button to be seen again.
+}
+};
+
+
+

@@ -3,9 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Assistant Calendar</title>
+    <link rel="stylesheet" href="homestyle.css" />
+    <link
+      rel="stylesheet" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+    /> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    /> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
 </head>
 <body>
-    
+    <div class="createPane">
+        <h1>Enter Username</h1>
+        <input type="text" id="createUser" name="createUser" required />
+        
+        <h1>Enter Password</h1>
+        <input type="password" id="createPass" name="createPass" required />
+
+        <h1>Enter Password Again</h1>
+        <input type="password" id="confirmPass" name="confirmPass" required />
+
+      <button type="submit" class="btn primary">Create Account</button> <!-- ChatGPT. Creates a button to submit the new username and passwords.-->
+      <a class="link-btn" href="home.html" id="createAccountLink"> Return </a> <!-- ChatGPT. Creates a button to home. Modified from Home page code.-->
+  </div>
+
+    <script src="homejs.js"></script>
 </body>
 </html>

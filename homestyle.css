@@ -286,6 +286,15 @@ html { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   font-weight: 600; /* ChatGPT. Makes text bolder */
   color: #1f2937; /* ChatGPT. Sets the color of the text */
   text-align: center; /* ChatGPT. Centers the text */
-  margin-top: 2rem; /* ChatGPT. Puts blank space above the text */
+  margin:.9rem 10rem; /* ChatGPT. Distance between the button and the top + side of the screen*/
   font-size: 1.2rem; /* ChatGPT. Sets the font size of the username text. */
+  float: right; 
+  
+}
+
+/* For Create Account Page*/
+
+.createPane {
+  display: flex;
+  flex-direction: column;
 }

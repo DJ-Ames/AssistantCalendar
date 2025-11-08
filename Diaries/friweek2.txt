@@ -1,0 +1,1 @@
+Worked on the create account page's HTML. Modified a few lines of code from the home page to help.
