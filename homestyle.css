@@ -125,7 +125,7 @@ html { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
     .open-modal-btn{ /* ChatGPT. Style for the sign in button on the home screen */
       appearance:none; /* ChatGPT. Removes styles */
       border:0; /* ChatGPT. Removes the border */
-      cursor:pointer; /* ChatGPT. Removes styles */
+      cursor:pointer; /* ChatGPT. Changes cursor to a pointer */
       background:var(--primary);color:#fff; /* ChatGPT. Sets the button color to the same as the primary property. Makes text white. */
       padding:.9rem 1.15rem; /* ChatGPT. Creates spacing between the text and the end of the button, vertically and horizontally */
       border-radius:12px; /* ChatGPT. Creates a round corner around the sign in button. */
