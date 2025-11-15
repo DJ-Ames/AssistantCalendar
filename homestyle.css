@@ -292,9 +292,206 @@ html { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   
 }
 
-/* For Create Account Page*/
 
-.createPane {
-  display: flex;
-  flex-direction: column;
+
+
+
+
+
+
+
+
+
+
+
+:root{ /* ChatGPT. Custom properties */
+  --cal-w: 45rem; /* ChatGPT. */
+  --sidebar-w: 500px; /* ChatGPT. The width of the builder menu */
+  --sidebar-gap: 16px; /* ChatGPT. A gap between the builder menu and the calendar */
+}
+
+
+.createEvent{ /* ChatGPT. For the whole createEvent sidebar */
+  position: fixed; /* ChatGPT. Keeps from scrolling when you scroll*/
+  top: 50%; /* ChatGPT. Centers with translateY(-50%)*/
+  transform: translateY(-50%); /* ChatGPT. Centers with top:50% */
+  left: calc(50% - var(--cal-w)/2 - var(--sidebar-w) - var(--sidebar-gap)); /* ChatGPT. Used to put the event builder panel beside the Calendar. Centers, then moves left, then adds a gap. */
+  width: var(--sidebar-w); /* ChatGPT. Sets the width of the builder sidebar */
+  max-height: 88vh; /* ChatGPT. Caps builder menu at 88% of screen height */
+  overflow: auto; /* ChatGPT. Allows scroller in builder menu if the menu gets too large for the screen*/
+  padding: 12px; /* ChatGPT. Makes the box a little bigger around the content*/
+  background: #fff; /* ChatGPT. Sets the background color to white */
+  border: 1px solid rgba(0,0,0,0.90); /* ChatGPT. Sets a border around the builder menu */
+  z-index: 1; /* ChatGPT. Keeps menu below the sign in modal*/
+}
+
+/* Optional: tidy headings/inputs INSIDE the sidebar if you used my eb-* classes */ 
+.createEvent .eb-title{ font-size:1.6rem; font-weight:700; margin-bottom:.6rem; } /* ChatGPT. Bolds the title of the CreateEvent page and adds a margin */
+.createEvent .eb-label{ display:block; font-size:1.15rem; margin:.6rem 0 .35rem; } /* ChatGPT. Labels are given margins, larger sizes and they take up the whole horizontal space */
+.createEvent .eb-input,
+.createEvent .eb-submit,
+.createEvent .day-toggle{ /* ChatGPT. Shared between createEvent's input boxes, submit button and the day selector buttons*/
+  width:100%; /* ChatGPT.  Fills whole horizontal space*/
+  font-size:1.2rem; /* ChatGPT. Increases the font size*/
+  padding:10px 12px; /* ChatGPT. Makes buttons a little larger with white space */
+  border:1px solid rgba(0,0,0,0.2); /* ChatGPT.  Adds a border around each of the buttons*/
+  outline:none; /* ChatGPT. Removes any foreign outlines */
+}
+
+
+
+.eb-input:focus { /* ChatGPT. For when input text boxes are focused */
+  border-color: rgba(0, 0, 0, 0.45); /* ChatGPT. Adds a border around the selected text box  */
+}
+
+.eb-row { /* ChatGPT. Formats items to be side by side */
+  display: grid; /* ChatGPT. Sets to a grid type of display */
+  grid-template-columns: 1fr 1fr; /* ChatGPT. Makes the two items in the row equally spaced */
+  gap: 8px 12px; /* ChatGPT. Adds spacing between the items in the row */
+}
+
+.eb-col { /* ChatGPT. Helps items stack on top of each other */
+  display: flex; /* ChatGPT. Sets to flex display */
+  flex-direction: column; } /* ChatGPT. Displays everything one on top of the other */
+
+
+.eb-hint { /* ChatGPT. Styling for the text that tells users what a event does */
+  font-size: 1.1rem; /* ChatGPT. Makes text a little bigger */
+  color: #555; /* ChatGPT. Makes text gray */
+  margin-top: 6px; /* ChatGPT. Adds space above the text */
+}
+
+.biweekly-grid { /* ChatGPT. Formats the biweekly day selector */
+  margin-top: 6px; /* ChatGPT. Adds space above the buttons */
+  display: grid; /* ChatGPT. Makes the display grid to keep things evenly spaced */
+  gap: 8px 12px; /* ChatGPT. Adds between both sets of buttons */
+}
+
+.week-col {/* ChatGPT. Contains the event builder weekday buttons */
+  display: grid; /* ChatGPT. Sets the display to grid for even spacing */
+  grid-template-columns: repeat(7, 1fr); /* ChatGPT. Keeps the days repeating side by side */
+  gap: 6px; /* ChatGPT. Puts space in between all buttons */
+} /* ChatGPT.  */
+
+.day-toggle { /* ChatGPT. Style for the day buttons */
+  padding: 8px 0; /* ChatGPT. Sizes the button around the text */
+  font-weight: 600; /* ChatGPT. Bolds the button */
+  text-align: center; /* ChatGPT. Centers text in the button */
+  border-radius: 12px; /* ChatGPT. Makes the buttons round */
+  cursor: pointer; /* ChatGPT. Turns mouse into a pointer when hovering */
+}
+
+.day-toggle.active { /* ChatGPT. For when the day buttons are selected */
+  background: #22c55e; /* ChatGPT. Makes background green */
+  color: #fff; /* ChatGPT. Makes text color white */
+  border-color: #22c55e; /* ChatGPT. Changes border color */
+}
+
+
+/* Submit */
+.eb-submit { /* ChatGPT. Style for the submit button on the builder menu */
+  margin-top: 14px; /* ChatGPT. Space between the submit and color buttons */
+  background: #111827; /* ChatGPT. Button color */
+  color: white; /* ChatGPT. Text color */
+  border: none; /* ChatGPT. Removes any borders */
+  cursor: pointer; /* ChatGPT. Changes mouse into a pointer icon when hovered */
+} /* ChatGPT.  */
+.eb-submit:hover { opacity: 0.60; } /* ChatGPT. Makes submit button see through which makes it lighter when hovered */
+
+.eb-preview { /* ChatGPT. Style for the event data display */
+  margin-top: 12px; /* ChatGPT. Spaces event data and the exit button */
+  padding: 10px 12px; /* ChatGPT. Gives event data white space around text */
+  background: #f9fafb; /* ChatGPT. Makes background white */
+  border: 1px dashed rgba(0,0,0,0.2); /* ChatGPT. Adds border around the event data */
+  font-size: 1.2rem; /* ChatGPT. Sizes font */
+  white-space: pre-wrap; /* ChatGPT. Keeps long lines from breaking */
+}
+
+
+
+
+
+
+
+
+
+/* ===== Create Account Page Layout ===== */
+
+.auth-wrapper { /* ChatGPT. Create account page */
+  min-height: 100vh; /* ChatGPT. Minimum height */
+  display: flex; /* ChatGPT. Sets display to flex to take up entire horizontal space */
+  align-items: center; /* ChatGPT. Centers */
+  justify-content: center; /* ChatGPT. Centers  */
+  background: #f3f4f6; /* background around pane */
+  padding: 1.5rem; /* ChatGPT. Keeps the pane away from the edge */
+} /* ChatGPT.  */
+
+.createPane { /* ChatGPT. The pane used to hold the sign in information */
+  display: flex; /* ChatGPT. Sets display to flex */
+  flex-direction: column; /* ChatGPT. Then makes it so items in the pane are one on top of the other */
+  max-width: 420px; /* ChatGPT. Max width of the pane */
+  width: 100%; /* ChatGPT. Full width of auth-wrapper */
+  background: #ffffff; /* ChatGPT. White background */
+  padding: 2.4rem 2rem 2rem; /* ChatGPT. White space around the account pane */
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12); /* ChatGPT. Shadow around the edges of the pane */
+} /* ChatGPT.  */
+
+.createPane h1 { /* ChatGPT. Styles the header in the create account page */
+  font-size: 2.2rem; /* ChatGPT. Makes the font bigger */
+  margin-bottom: 0.4rem; /* ChatGPT. Adds margins beneath the font */
+}
+
+.auth-subtitle { /* ChatGPT. For the text beneath create an account */
+  font-size: 1.3rem; /* ChatGPT. Sets size */
+  color: #6b7280; /* ChatGPT. Sets font color */
+  margin-bottom: 1.6rem; /* ChatGPT. Adds bottom margin */
+}
+
+
+.auth-label { /* ChatGPT. The labels above the input boxes */
+  font-size: 1.25rem; /* ChatGPT. Sets the font size */
+  margin: 0.8rem 0 0.4rem; /* ChatGPT. spaces the font away from the text input */
+  font-weight: 600; /* ChatGPT. Bolds the font */
+}
+
+.auth-input { /* ChatGPT. For the create account text inputs */
+  width: 100%; /* ChatGPT. Takes up full width of pane */
+  font-size: 1.2rem; /* ChatGPT. size of the input text */
+  padding: 0.75rem 0.9rem; /* ChatGPT. space around the input text */
+  border: 1.5px solid #d1d5db; /* ChatGPT. Creates a borderline around the input box */
+  font-family: "Quicksand", sans-serif; /* ChatGPT. The font types of the input box */
+  outline: none; /* ChatGPT. removes any external outlines */
+}
+
+.auth-input:focus { /* ChatGPT. For when an input is focused on */
+  border-color: #93c5fd; /* ChatGPT. Changes color when focused */
+}
+
+.auth-hint { /* ChatGPT. The text explaining how to make a password */
+  display: flex; 
+  font-size: 1.1rem; /* ChatGPT. text size */
+  color: #6b7280; /* ChatGPT. Text color */
+  margin-top: 0.3rem; /* ChatGPT. spacing above the text */
+}
+
+.auth-actions { /* ChatGPT. The div for the submit and exit buttons */
+  display: flex; /* ChatGPT. Sets the display to flex */
+  flex-direction: column; /* ChatGPT. so that the buttons can be aligned vertically */
+  gap: 0.75rem; /* ChatGPT. Spacing between the buttons */
+  margin-top: 1.6rem; /* ChatGPT. Margin between the create account button and the confirm password text box */
+}
+
+/* Status messages */
+.form-status { /* ChatGPT. For status messages to confirm a successful account creation  */
+  min-height: 1.4rem; /* ChatGPT. the minimum height of the status message */
+  margin-bottom: 0.8rem; /* ChatGPT. The margin beneath the status message */
+  font-size: 1.1rem; /* ChatGPT. Font size of the status message */
+}
+
+.form-status.error { /* ChatGPT. For when the create account attempt fails */
+  color: #b91c1c; /* ChatGPT. Sets color to red */
+}
+
+.form-status.success { /* ChatGPT. For when the create account attempt succeeds */
+  color: #15803d; /* ChatGPT. Sets color to green */
 }

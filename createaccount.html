@@ -15,19 +15,91 @@
     /> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
 </head>
 <body>
-    <div class="createPane">
-        <h1>Enter Username</h1>
-        <input type="text" id="createUser" name="createUser" required />
-        
-        <h1>Enter Password</h1>
-        <input type="password" id="createPass" name="createPass" required />
 
-        <h1>Enter Password Again</h1>
-        <input type="password" id="confirmPass" name="confirmPass" required />
 
-      <button type="submit" class="btn primary">Create Account</button> <!-- ChatGPT. Creates a button to submit the new username and passwords.-->
-      <a class="link-btn" href="home.html" id="createAccountLink"> Return </a> <!-- ChatGPT. Creates a button to home. Modified from Home page code.-->
-  </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="auth-wrapper"> <!-- ChatGPT. Contains the visible sections of the page-->
+    <div class="createPane" role="form" aria-labelledby="create-title"> <!-- ChatGPT. Contains the area where sign in information is entered-->
+      <h1 id="create-title">Create an Account</h1> <!-- ChatGPT. Title to explain what the page does-->
+      <p class="auth-subtitle">
+        Make an account to save your recurring events.
+      </p> <!-- ChatGPT. A paragraph explaining what making an account does.-->
+
+      <!-- Error / status message -->
+      <div id="createStatus" class="form-status" aria-live="polite"></div> <!-- ChatGPT. Empty space for Javascript to add error messages later -->
+
+      <form id="createForm" novalidate> <!-- ChatGPT. Contains all inputs. Blocks browser popups-->
+        <!-- Username -->
+        <label for="createUser" class="auth-label">Username</label> <!-- ChatGPT. Label showing what the text box below is for-->
+        <input
+          type="text"
+          id="createUser"
+          name="createUser"
+          class="auth-input"
+          required
+          minlength="3"
+          maxlength="20"
+        /> <!-- ChatGPT. Text box for a user to input their username. Must be between 3 and 20 letters.-->
+
+        <!-- Password -->
+        <label for="createPass" class="auth-label">Password</label> <!-- ChatGPT. Label showing what the text box below is for-->
+        <input
+          type="password"
+          id="createPass"
+          name="createPass"
+          class="auth-input"
+          required
+          minlength="8"
+        /> <!-- ChatGPT. Text box for a user to input their password. Must be at least 8 characters long.-->
+        <small class="auth-hint">
+          Use at least 8 characters. A mix of letters, numbers, and symbols is recommended.
+        </small> <!-- ChatGPT. Smaller text telling the user the requirement and suggestions for a password. -->
+
+        <!-- Confirm Password -->
+        <label for="confirmPass" class="auth-label">Confirm Password</label> <!-- ChatGPT. Label showing what the text box below is for-->
+        <input
+          type="password"
+          id="confirmPass"
+          name="confirmPass"
+          class="auth-input"
+          required
+          minlength="8"
+        /> <!-- ChatGPT. Text box for a user to repeat their password. Must be at least 8 characters long.-->
+
+        <!-- Actions -->
+        <div class="auth-actions"> <!-- ChatGPT. A container holding the submit and return buttons-->
+          <button type="submit" class="btn primary"> 
+            Create Account 
+          </button> <!-- ChatGPT. The button to submit account information-->
+          <a class="link-btn auth-return" href="home.html" id="createAccountLink">
+            Return to Calendar
+          </a> <!-- ChatGPT. The button to return to the calendar page-->
+        </div> <!-- ChatGPT. -->
+      </form> <!-- ChatGPT. -->
+    </div> <!-- ChatGPT. -->
+  </div> <!-- ChatGPT. -->
+ 
+
+
+
+
+
+
+  
+
+
+
+
 
     <script src="homejs.js"></script>
 </body>
