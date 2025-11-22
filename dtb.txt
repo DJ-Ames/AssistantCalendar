@@ -5,13 +5,14 @@ CREATE DATABASE AssistantCalendar;
 USE AssistantCalendar;
 
 CREATE TABLE Users (
-    UserID INT PRIMARY KEY,
+    UserID INT PRIMARY KEY AUTO_INCREMENT, --ChatGPT. Automatically makes user ids
     Username VARCHAR(20),
     Password VARCHAR(40)
+    ADD UNIQUE (Username); --ChatGPT. Makes it so usernames can't repeat
 );
 
 CREATE TABLE Event (
-    EventID INT PRIMARY KEY,
+    EventID INT PRIMARY KEY AUTO_INCREMENT, --ChatGPT. Automatically makes event ids
     UserID INT,
     Name VARCHAR(20),
     Color VARCHAR(6),
@@ -23,7 +24,7 @@ CREATE TABLE Event (
 );
 
 CREATE TABLE Prompt (
-    PromptID INT PRIMARY KEY,
+    PromptID INT PRIMARY KEY AUTO_INCREMENT, --ChatGPT. Automatically makes prompt ids
     UserID INT,
     EventID INT,
     PromptText TEXT,

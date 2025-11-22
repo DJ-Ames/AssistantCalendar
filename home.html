@@ -17,10 +17,55 @@
   <body>
     <div id="userInfo" class="user-info"></div> <!-- ChatGPT. Container to display username after sign in-->
     <button class="open-modal-btn" id="openSignIn">Sign In</button> <!-- ChatGPT. Creates the button element that opens the sign in modal -->
-    <div class="ribbon">
-      <button class="RibbonClip" onclick="ShowRibbon">>>></button>
-      <button class="Help" onclick="help.html">?</button>
-    </div>
+
+
+
+
+<div class="ribbon">
+  <button
+    class="RibbonClip"
+    onclick="ShowRibbon()"
+    aria-expanded="false"
+    aria-controls="sideMenu"
+  >
+    >>>
+  </button> <!-- ChatGPT. Button that tells Javascript to open the menu. Tells screen readers it is not open-->
+</div> 
+
+<!-- Slide-out side menu -->
+<nav id="sideMenu" class="side-menu" aria-label="Saved patterns"> <!-- ChatGPT. Creates the container for the ribbon menu -->
+  <div class="side-menu-header"> <!-- ChatGPT. Contains the header section of the menu -->
+    <div class="side-menu-title">Patterns</div> <!-- ChatGPT. A title in the menu-->
+    <button
+      type="button"
+      class="side-menu-help"
+      id="helpBtn"
+      aria-label="Open Help page"
+    >
+      ?
+    </button> <!-- ChatGPT. The help button. Tells screen readers what the button does -->
+  </div> <!-- ChatGPT. -->
+
+   <div class="side-menu-actions"> <!-- ChatGPT. The container for the create event button -->
+    <button id="createEventBtn" class="menu-btn create-btn">+ Create Event</button> <!-- ChatGPT. Links to the create event page -->
+  </div> <!-- ChatGPT. -->
+
+  <!-- Pattern section title -->
+  <div class="side-menu-subtitle">Saved Patterns</div> <!-- ChatGPT. Title above the list of patterns-->
+  
+  <div id="patternList" class="pattern-list"> <!-- ChatGPT. shows a list of events the user created -->
+  </div> <!-- ChatGPT. -->
+</nav> <!-- ChatGPT. -->
+
+
+
+
+
+
+
+
+
+
     <div class="notes">
       
     </div>

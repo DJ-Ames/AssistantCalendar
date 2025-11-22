@@ -18,16 +18,6 @@
   <body>
     <div id="userInfo" class="user-info"></div> <!-- ChatGPT. Container to display username after sign in-->
     <button class="open-modal-btn" id="openSignIn">Sign In</button> <!-- ChatGPT. Creates the button element that opens the sign in modal -->
-
-
-
-
-
-
-
-
-
-
     <!-- Event Builder (left sidebar) -->
 <aside class="createEvent" aria-label="Event builder"> <!-- ChatGPT. Creates a div section to contain the sidebar and to connect to CSS -->
   <form id="eventBuilderForm" action="/create_event" method="POST" novalidate> <!-- ChatGPT. Sends data to "/create_event" which would be where Python receives the data-->
@@ -170,17 +160,6 @@
     <pre id="eventPreview" class="eb-preview" aria-live="polite" hidden></pre> <!-- ChatGPT. Shows submitted information beneath the exit button in JSON format-->
   </form> <!-- ChatGPT. -->
 </aside> <!-- ChatGPT. -->
-
-
-
-
-
-
-
-
-
-
-
     <div class="modal-overlay" id="modalOverlay" aria-hidden="true"></div> <!-- ChatGPT. creates a background over the rest of the screen when the modal is open-->
     <div class="modal" id="signInModal" aria-hidden="true"> <!-- ChatGPT. Main Modal Container -->
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="signin-title"> <!-- ChatGPT. Modal container that allows for the structure of the modal-->
@@ -247,7 +226,6 @@
         <div class="days"></div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
       </div>
     </div>
-
-    <script src="homejs.js"></script>
+     <script src="homejs.js"></script>
   </body>
 </html>

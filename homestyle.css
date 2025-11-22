@@ -292,18 +292,6 @@ html { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 :root{ /* ChatGPT. Custom properties */
   --cal-w: 45rem; /* ChatGPT. */
   --sidebar-w: 500px; /* ChatGPT. The width of the builder menu */
@@ -408,13 +396,6 @@ html { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
 }
 
 
-
-
-
-
-
-
-
 /* ===== Create Account Page Layout ===== */
 
 .auth-wrapper { /* ChatGPT. Create account page */
@@ -494,4 +475,229 @@ html { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
 
 .form-status.success { /* ChatGPT. For when the create account attempt succeeds */
   color: #15803d; /* ChatGPT. Sets color to green */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ribbon { /* ChatGPT. Style for the ribbon container. Allows ribbon button to move */
+  position: fixed; /* ChatGPT. Keeps from moving when a user scrolls */
+  left: 0; /* ChatGPT. Keeps it on the exact left of the page*/
+  z-index: 1201; /* ChatGPT. Keeps the ribbon button over every other page aspect */
+  transition: left 0.25s ease; /* ChatGPT. Makes the ribbon button move a little slower */
+}
+
+
+body.menu-open .ribbon { /* ChatGPT. Button position For when the ribbon is open */
+  left: 260px; /* ChatGPT. The size the ribbon expands to. Where the button moves */ 
+}
+
+
+.RibbonClip { /* ChatGPT. For the ribbon open button*/ 
+  background: #111827; /* ChatGPT. Background color*/ 
+  color: #f9fafb; /* ChatGPT. Text color*/ 
+  border: none; /* ChatGPT. Removes other border settings */ 
+  padding: 1rem 1rem; /* ChatGPT. Makes the button take up more space around the text */ 
+  cursor: pointer; /* ChatGPT. Turns mouse into pointer button when hovered */ 
+  font-weight: 700; /* ChatGPT. Bolds font*/ 
+  letter-spacing: 0.08em; /* ChatGPT. Spaces in between text */ 
+  font-size: 1.3rem; /* ChatGPT. The size of the text */ 
+} /* ChatGPT. */ 
+
+.RibbonClip:hover { /* ChatGPT. When the open ribbon button is hovered over*/ 
+  opacity: 0.9; /* ChatGPT. Become a bit translucent */ 
+}
+
+.side-menu { /* ChatGPT. For formatting the menu*/ 
+  position: fixed; /* ChatGPT. Keeps menu from moving while the user scrolls*/ 
+  height: 100vh; /* ChatGPT. Height goes full screen*/ 
+  width: 260px; /* ChatGPT. Width of the menu*/ 
+  max-width: 80vw; /* ChatGPT. Menu can cover at most 80% of the screen*/ 
+  background: #111827; /* ChatGPT. Background color */ 
+  color: #f9fafb; /* ChatGPT. Text color */ 
+  transform: translateX(-100%); /* ChatGPT. Keeps off screen */ 
+  transition: transform 0.25s ease; /* ChatGPT. Slows transition when opening*/ 
+  z-index: 1200; /* ChatGPT. Makes the menu appear over objects that aren't the button */ 
+  display: flex; /* ChatGPT. Vertically aligns items */ 
+  flex-direction: column; /* ChatGPT. Vertically aligns items */ 
+}
+
+.side-menu.open { /* ChatGPT. When the menu is open */ 
+  transform: translateX(0); /* ChatGPT. Makes the menu visible by moving it */ 
+}
+
+.side-menu-header { /* ChatGPT. Contains header content like the help button*/ 
+  display: flex; /* ChatGPT. Items take up full horizontal space*/ 
+  align-items: center; /* ChatGPT. Centers everything in the header */ 
+  justify-content: space-between; /* ChatGPT. Puts space between the items in the header*/ 
+  padding: 1rem 1rem 0.75rem; /* ChatGPT. Gives the header some space around the items */ 
+  border-bottom: 1px solid rgba(249, 250, 251, 0.08); /* ChatGPT. Creates a border beneath the header */ 
+}
+
+.side-menu-title { /* ChatGPT. The title of the ribbon menu */ 
+  font-size: 1.1rem; /* ChatGPT. Makes font a little larger*/ 
+  font-weight: 700; /* ChatGPT. Bolds font*/ 
+}
+
+.side-menu-help { /* ChatGPT. Formats the help button */ 
+  appearance: none; /* ChatGPT. Removes any default styles*/ 
+  border: 1px solid rgba(249, 250, 251, 0.4); /* ChatGPT. Makes a border around the button*/ 
+  background: transparent; /* ChatGPT. Makes button background transparent so it matches the background of the menu*/ 
+  color: #f9fafb; /* ChatGPT. Colors the font */ 
+  border-radius: 999px; /* ChatGPT. Rounds the button*/ 
+  width: 28px; /* ChatGPT. The width of the button*/ 
+  height: 28px; /* ChatGPT. The height of the button*/ 
+  font-weight: 700; /* ChatGPT. Bolds the button's font */ 
+  cursor: pointer; /* ChatGPT. Turns cursor into a pointer button when hovered over */ 
+  justify-content: center; /* ChatGPT. Centers the font*/ 
+}
+
+.side-menu-help:hover { /* ChatGPT. When the help button is hovered over */ 
+  background: rgba(249, 250, 251, 0.12); /* ChatGPT. Background changes color */ 
+}
+
+.pattern-list { /* ChatGPT. Contains the list of events */ 
+  padding: 0.75rem 1rem 1rem; /* ChatGPT. Padding around the list */ 
+  overflow-y: auto; /* ChatGPT. Adds scroll bar after overflow*/ 
+  flex: 1; /* ChatGPT. Fills all space beneath the header*/ 
+}
+
+.pattern-item { /* ChatGPT. An individual event that was created*/ 
+  display: flex; /* ChatGPT. Takes up whole horizontal area*/ 
+  align-items: center; /* ChatGPT. Centers items*/ 
+  justify-content: space-between; /* ChatGPT. Puts space between items */ 
+  gap: 0.5rem; /* ChatGPT. Adds a gap in between the items*/ 
+  padding: 0.35rem 0; /* ChatGPT. Padding around the pattern*/ 
+  border-bottom: 1px dashed rgba(249, 250, 251, 0.08); /* ChatGPT. A line on the bottom */ 
+}
+
+.pattern-item:last-child { /* ChatGPT. When it's the last event in a list*/ 
+  border-bottom: none; /* ChatGPT. Remove the bottom line*/ 
+}
+
+.pattern-main { /* ChatGPT. Contains the individual parts of the events like names and color*/ 
+  display: flex; /* ChatGPT. Takes up whole horizontal space*/ 
+  align-items: center; /* ChatGPT. Centers items*/ 
+  gap: 0.5rem; /* ChatGPT. Gaps between items */ 
+  min-width: 0; /* ChatGPT. Prevents text overflow*/ 
+}
+
+.pattern-color { /* ChatGPT. Shows the color of the pattern */ 
+  width: 14px; /* ChatGPT. Width */ 
+  height: 14px; /* ChatGPT. Height */ 
+  border-radius: 999px; /* ChatGPT. Rounds */ 
+  border: 1px solid rgba(17, 24, 39, 0.8); /* ChatGPT. Border around the color*/ 
+  flex-shrink: 0; /* ChatGPT. Keeps a consistent size on small screens */ 
+}
+
+
+.pattern-name { /* ChatGPT. The name of the pattern*/ 
+  font-size: 0.9rem; /* ChatGPT. The font size*/ 
+  white-space: nowrap; /* ChatGPT. Ends in ellipses if too long */ 
+  overflow: hidden; /* ChatGPT. Hide overflow */ 
+  text-overflow: ellipsis; /* ChatGPT. Turns overflow into ellipses*/ 
+}
+
+.pattern-actions { /* ChatGPT. Contains the edit and delete buttons*/ 
+  display: flex; /* ChatGPT. Take up whole space given */ 
+  gap: 0.25rem; /* ChatGPT. Gap between the buttons */ 
+  flex-shrink: 0; /* ChatGPT. Stays the same size on smaller screens*/ 
+}
+
+.pattern-btn { /* ChatGPT. Styles for the edit and delete buttons*/ 
+  appearance: none; /* ChatGPT. Removes default styles */ 
+  border-radius: 999px; /* ChatGPT. Rounds the buttons*/ 
+  border: 1px solid rgba(249, 250, 251, 0.25); /* ChatGPT. Makes a border around the buttons*/ 
+  background: transparent; /* ChatGPT. Buttons blend in with background of the menu */ 
+  color: #f9fafb; /* ChatGPT. Text color*/ 
+  padding: 0.15rem 0.6rem; /* ChatGPT. Padding around the button's pictures*/ 
+  font-size: 0.7rem; /* ChatGPT. Font size*/ 
+  cursor: pointer; /* ChatGPT. Mouse becomes a pointer when hovering over */ 
+}
+
+.pattern-btn.edit-btn { /* ChatGPT. For the edit button*/ 
+  border-color: #93c5fd; /* ChatGPT. Sets the border color */ 
+}
+
+.pattern-btn.delete-btn { /* ChatGPT. For the delete button */ 
+  border-color: #fca5a5; /* ChatGPT. Sets the border color */ 
+}
+
+.pattern-btn:hover { /* ChatGPT. For when the edit or delete buttons are hovered over*/ 
+  background: rgba(249, 250, 251, 0.10); /* ChatGPT. Changes background color */ 
+}
+
+.pattern-empty { /* ChatGPT. The text that appears when there are no patterns*/ 
+  font-size: 0.9rem; /* ChatGPT. Makes text a little smaller */ 
+  color: #9ca3af; /* ChatGPT. Grays text */ 
+  margin-top: 0.75rem; /* ChatGPT. Puts space above the text*/ 
+}
+
+/* ===== Create Event Button ===== */
+
+.side-menu-actions { /* ChatGPT. Wrapper for the create event link button */ 
+  padding: 1rem 1rem 0.5rem; /* ChatGPT. Spacing around the button */ 
+  border-bottom: 1px solid rgba(249, 250, 251, 0.08); /* ChatGPT. Border on the bottom of the wrapper */ 
+}
+
+.menu-btn { /* ChatGPT. For the create event button */ 
+  width: 100%; /* ChatGPT. Takes up full available width */ 
+  appearance: none; /* ChatGPT. Removes default styles*/ 
+  padding: 0.7rem 1rem; /* ChatGPT. Padding to make the button larger around the font */ 
+  border: none; /* ChatGPT. Removes default border style*/ 
+  cursor: pointer; /* ChatGPT. Pointer button when hovering over */ 
+  font-weight: 700; /* ChatGPT. Bolds button font */ 
+  font-size: 0.95rem; /* ChatGPT. Makes button font a little smaller*/ 
+}
+
+.create-btn { /* ChatGPT. More styles, now specifically for create page button*/ 
+  background: #10b981; /* ChatGPT. Adds a background color */ 
+  color: #fff; /* ChatGPT. The font's color*/ 
+}
+
+.create-btn:hover { /* ChatGPT. For when hovering over the create button. */ 
+  opacity: 0.85; /* ChatGPT. Create button turns a little transparent*/ 
+}
+
+.side-menu-subtitle { /* ChatGPT. Font saying "saved patterns"*/ 
+  font-size: 0.9rem; /* ChatGPT. Makes font a little smaller */ 
+  font-weight: 600; /* ChatGPT. Bolds font somewhat*/ 
+  padding: 0.8rem 1rem 0.3rem; /* ChatGPT. Space around the font*/ 
+  opacity: 0.9; /* ChatGPT. Blends the font with the background color a bit*/ 
+}
+
+
+
+/* More create account CSS */
+.form-status { /* ChatGPT. Status updates for creating account*/ 
+  margin-bottom: 1rem; /* ChatGPT. Spacing beneath the update */ 
+  min-height: 1.5rem; /* ChatGPT. Minimum height of the status*/ 
+  font-size: 0.9rem; /* ChatGPT. Font size */ 
+}
+
+.form-status.error { /* ChatGPT. For failed create account */ 
+  color: #b00020; /* ChatGPT. Displays red */ 
+}
+
+.form-status.success { /* ChatGPT. For successful create account */ 
+  color: #0b7a28; /* ChatGPT. Displays green */ 
+}
+
+.form-status.info { /* ChatGPT. For during account creation */ 
+  color: #555; /* ChatGPT. Displays gray */
 }

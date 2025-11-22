@@ -1,8 +1,5 @@
 const date = new Date(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
 
-function ShowRibbon() {
-
-};
 
 const renderCalendar = () => { // https://www.youtube.com/watch?v=o1yMqPyYeAo
   date.setDate(1); // https://www.youtube.com/watch?v=o1yMqPyYeAo
@@ -150,27 +147,147 @@ renderCalendar(); // https://www.youtube.com/watch?v=o1yMqPyYeAo
 
 
 let currentUser = null; // ChatGPT. The variable that tracks the input username
+const signinStatus = document.getElementById('signinStatus'); // Optional status area in modal
 
 
-function updateUserDisplay() { // ChatGPT. Function to change the user display after someone signs in
-  if (currentUser) { // ChatGPT. An if statement that works whenever someone is logged in
-    userInfo.innerHTML = `
-      Welcome, <strong>${currentUser}</strong> 
-      <br /> 
-      <button id="signOutBtn" class="btn ghost" style="margin-top:8px;">Sign Out</button>
-    `; // ChatGPT. Changes the userinfo divider to display the string above. Also adds a sign out button.
 
-    openBtn.style.display = "none"; // ChatGPT. Hides the sign in button whenever someone is logged in. 
 
-    document.getElementById('signOutBtn').addEventListener('click', () => { // ChatGPT. Whenever signout button is clicked
-      currentUser = null; // ChatGPT. Removes the current user from the variable.
-      updateUserDisplay(); // ChatGPT. Returns to being signed out
-    });
-  } else { // ChatGPT. When no one is signed in
-    userInfo.textContent = ""; // ChatGPT. Gets rid of the welcome message.
-    openBtn.style.display = "inline-block"; // ChatGPT. Allows the sign in button to be seen again.
-}
-};
+
+
+
+
+
+
+
+
+
+if (openBtn && modal && overlay && closeBtn && form && username && password && togglePwd && userInfo) { // ChatGPT. If all elements listen are on the page (When a user is using the sign in modal)
+
+  const showSigninStatus = (msg, type = 'error') => { // ChatGPT. ShowsigninStatus stores error as a default message
+    if (!signinStatus) { // ChatGPT. if there is no <div id="signinStatus"> on the page
+      alert(msg); // ChatGPT. Sends error message
+      return; // ChatGPT. Ends if statement
+    }
+    signinStatus.textContent = msg; // ChatGPT. Shows the status message
+    signinStatus.className = 'form-status'; // ChatGPT. Resets status message
+    signinStatus.classList.add(type);  // ChatGPT. Adds the error, success or info CSS style type
+  };
+
+  const escToClose = (e) => {  // ChatGPT. Sets a variable to be an escape key
+    if (e.key === 'Escape') closeModal(); // ChatGPT. Closes modal after escape is pressed
+  };
+
+  const openModal = () => {   // ChatGPT. For opening the sign in modal
+    modal.classList.add('active'); // ChatGPT. Makes the modal panel visible
+    overlay.classList.add('active'); // ChatGPT. Makes the screen overlay cover the screen
+    requestAnimationFrame(() => username.focus()); // ChatGPT. Focuses on the username text box
+    document.addEventListener('keydown', escToClose); // ChatGPT. Activates the function that closes the modal when esc is pressed
+    if (signinStatus) { // ChatGPT. If the sign in status element is there
+      signinStatus.textContent = ''; // ChatGPT. Text is cleared
+      signinStatus.className = 'form-status'; // ChatGPT. Sets CSS class to form-status
+    } // ChatGPT.
+  }; // ChatGPT.
+
+  const closeModal = () => { // ChatGPT. To close the modal
+    modal.classList.remove('active'); // ChatGPT. Remove active style from the modal
+    overlay.classList.remove('active'); // ChatGPT. Remove active style from the overlay
+    document.removeEventListener('keydown', escToClose); // ChatGPT. Ends the event listener waiting for escape to be pressed
+  };
+
+  // Toggle password visibility
+  togglePwd.addEventListener('click', () => { // ChatGPT. Upon clicking the eye icon
+    const isHidden = password.type === 'password'; // ChatGPT. Checks if the password is still set as password and hidden
+    password.type = isHidden ? 'text' : 'password'; // ChatGPT. Switches between text or password setting for the password
+    togglePwd.innerHTML = isHidden // ChatGPT. Checks if symbol is set to hidden
+      ? '<i class="far fa-eye-slash"></i>' // ChatGPT. Slash over eye symbol
+      : '<i class="far fa-eye"></i>'; // ChatGPT. Normal eye symbol
+    password.focus(); // ChatGPT. Focus on the password box
+  }); // ChatGPT.
+
+  // Open / close bindings
+  openBtn.addEventListener('click', openModal); // ChatGPT. Calls openModal on click of sign in
+  closeBtn.addEventListener('click', closeModal); // ChatGPT. Closes modal after close button is clicked
+  overlay.addEventListener('click', closeModal);  // ChatGPT. Closes modal afte4r overlay is clicked
+
+
+  function updateUserDisplay() { // ChatGPT. For updating the username area after sign in
+    if (currentUser) { // ChatGPT. If there is a current user
+      userInfo.innerHTML = `
+        Welcome, <strong>${currentUser}</strong>
+        <br />
+        <button id="signOutBtn" class="btn ghost" style="margin-top:8px;">
+          Sign Out
+        </button>
+      `; // ChatGPT. Creates text displaying "welcome, username" and displays sign out button
+      openBtn.style.display = 'none'; // ChatGPT. Hides sign in button
+
+      document.getElementById('signOutBtn').addEventListener('click', () => { // ChatGPT. Upon clicking the sign out button
+        currentUser = null; // ChatGPT. Set user to null
+        // Optionally tell Flask you're logging out:
+        // fetch('/api/logout', { method: 'POST' }).catch(() => {});
+        updateUserDisplay(); // ChatGPT. Change user display to show the signed out page
+      }); // ChatGPT.
+    } else { // ChatGPT. If there is no current user
+      userInfo.textContent = ''; // ChatGPT. Clear welcome text box
+      openBtn.style.display = 'inline-block'; // ChatGPT. Makes sign in button visible
+    }
+  }
+
+  // Initial state
+  updateUserDisplay(); // ChatGPT. Calls the function to check if a user is signed in
+
+  // ===== Login form submit → call Flask /api/login =====
+  form.addEventListener('submit', async (e) => { // ChatGPT. async allows background running after submitting the sign in information
+    e.preventDefault(); // ChatGPT. Stops page from reloading
+
+    const user = username.value.trim(); // ChatGPT. Stores username. Trims white spaces from username value
+    const pass = password.value; // ChatGPT. Stores Password.
+
+    // Front-end validation
+    if (!user || !pass) { // ChatGPT. If there is no username or password
+      (!user ? username : password).focus(); // ChatGPT. Focus on whichever is missing
+      showSigninStatus('Please enter both username and password.', 'error'); // ChatGPT. Send error message
+      return; // ChatGPT. Finish
+    }
+
+    if (pass.length < 8) { // ChatGPT. If password is less than 8 characters
+      password.focus(); // ChatGPT. Focus on password box
+      showSigninStatus('Password must be at least 8 characters long.', 'error'); // ChatGPT. Error message
+      return; // ChatGPT. Finish
+    }  // ChatGPT.
+
+    // Talk to backend
+    try { // ChatGPT. Try for error handling
+      showSigninStatus('Signing in...', 'info'); // ChatGPT. Signing in message
+
+      const res = await fetch('/api/login', { // ChatGPT. Sends to the server
+        method: 'POST', // ChatGPT. For client to server 
+        headers: { 'Content-Type': 'application/json' }, // ChatGPT. JSON type for transport
+        body: JSON.stringify({ username: user, password: pass }) // ChatGPT. Turns username and password into JSON
+      }); // ChatGPT.
+
+      const data = await res.json(); // ChatGPT. Stores JSON text as data
+
+      if (!res.ok || !data.ok) { // ChatGPT. if the data doesn't transit or the text fails to become json
+        showSigninStatus(data.error || 'Invalid username or password.', 'error'); // ChatGPT. error message
+        return; // ChatGPT. Ends
+      } // ChatGPT.
+
+      // Success: store username from server & update UI
+      currentUser = data.username || user; // ChatGPT. Current user equals data of user
+      updateUserDisplay(); // ChatGPT. Shows username
+      showSigninStatus('Login successful.', 'success'); // ChatGPT. Success status
+      closeModal(); // ChatGPT. Closes sign in
+
+    } catch (err) {  // ChatGPT. If there is an error
+      console.error('Login error:', err); // ChatGPT. Console message
+      showSigninStatus('Network error. Please try again.', 'error'); // ChatGPT. Error status message
+    } // ChatGPT.
+  }); // ChatGPT.
+} // ChatGPT.
+
+
+
 
 
 
@@ -311,6 +428,28 @@ function updateUserDisplay() { // ChatGPT. Function to change the user display a
     } // ChatGPT.
   } // ChatGPT.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // Submit handler (stays on page; logs JSON; shows preview)
   form.addEventListener("submit", (e) => { // ChatGPT. When submit is pressed in event builder
     e.preventDefault(); // ChatGPT. Keeps page from reloading after submission
@@ -328,57 +467,263 @@ function updateUserDisplay() { // ChatGPT. Function to change the user display a
     preview.textContent = JSON.stringify(payload, null, 2); // ChatGPT. Formats the payload data into a JSON format
     console.log("Event payload:", payload); // ChatGPT. logs the data made.
 
-    // Example for Flask later:
-    // fetch("/create_event", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(payload)
-    // }).then(r => r.json()).then(console.log).catch(console.error);
-  });
+  
+    const patterns = loadPatterns(); // ChatGPT. Stores patterns
+    
 
+    const idx = patterns.findIndex((p) => p.name === payload.name); // ChatGPT. Sees if a pattern has the same name and either updates or makes a new pattern
+
+    const newRecord = { // ChatGPT. For adding a new pattern on the front end
+      id: // ChatGPT. For setting an id
+        idx >= 0 // ChatGPT. does the pattern exist
+          ? patterns[idx].id // ChatGPT. if the id exists reuse
+          : (window.crypto && crypto.randomUUID // ChatGPT. If the id does not exist make a new one
+              ? crypto.randomUUID() // ChatGPT. Generate random number
+              : String(Date.now())), // ChatGPT. Or use the date as a string
+      name: payload.name, // ChatGPT. Take name from the payload name
+      color: payload.color || "#10b981", // ChatGPT. Take the color from the payload color
+      patternType: payload.patternType, // ChatGPT. Take the pattern type
+      payload: payload // ChatGPT. store the whole payload object
+    }; // ChatGPT.
+
+    if (idx >= 0) { // ChatGPT. If a pattern with the same id existed
+      patterns[idx] = newRecord; // ChatGPT.overwrite with the new pattern
+    } else { // ChatGPT. Else
+      patterns.push(newRecord); // ChatGPT. Create the new pattern
+    }
+
+    savePatterns(patterns); // ChatGPT. Add pattern data to the array
+
+    if (typeof window.refreshPatternList === "function") { // ChatGPT. If the page has the menu list
+      window.refreshPatternList(); // ChatGPT. refresh the page
+    }
+
+    // Later you will also POST to Flask here:
+    // After payload is built & validated:
+fetch("/create_event", { // ChatGPT. Send data to flask server
+  method: "POST", // ChatGPT. use client to server method
+  headers: { "Content-Type": "application/json" }, // ChatGPT. As JSON
+  body: JSON.stringify(payload) // ChatGPT. Send the JSON payload
+})
+  .then(res => res.json()) // ChatGPT. If there is a response
+  .then(data => { // ChatGPT. After the response
+    if (!data.ok) { // ChatGPT. Checkes if the data was false
+      alert(data.error || "Failed to create event");  // ChatGPT. Sends an error message about creation failure
+      return; // ChatGPT. ends
+    } // ChatGPT.
+    console.log("Event created:", data); // ChatGPT. Logs that an event was created
+    alert(`Event created. Dates inserted: ${data.datesInserted}`); // ChatGPT. Tells the user the event was successful. Displays dates inserted
+  }) // ChatGPT.
+  .catch(err => { // ChatGPT. If there is an error
+    console.error("Error:", err); // ChatGPT. Console logs error
+    alert("Network or server error."); // ChatGPT. Tells user there was an error
+  }); // ChatGPT.
+
+  }); // ChatGPT.
   // Initialize visibility on load
   applyVisibility(); // ChatGPT. Once everything is submitted returns to the default visibility screen
 })(); // ChatGPT.
 
 
 
-
 // check matching passwords
-    document.getElementById('createForm').addEventListener('submit', function (e) {  // ChatGPT. Waits for the submit button to be pressed.
-      e.preventDefault(); // ChatGPT. Keeps browser from resetting when a submit fails
+    // === Create Account → talk to Flask backend ===
+document.addEventListener('DOMContentLoaded', () => { // ChatGPT. Waits until everything is loaded
+  const createForm = document.getElementById('createForm'); // ChatGPT. Checks that user is on the create account page
+  if (!createForm) return;  // ChatGPT. Don't run if not the create account page.
 
-      const user = document.getElementById('createUser').value.trim(); // ChatGPT. Username text with white space removed
-      const pass = document.getElementById('createPass').value; // ChatGPT. First password text
-      const confirm = document.getElementById('confirmPass').value; // ChatGPT. Confirm password text
-      const statusBox = document.getElementById('createStatus'); // ChatGPT. Whether or not the password succeeded or failed
+  const userInput    = document.getElementById('createUser'); // ChatGPT. The input username
+  const passInput    = document.getElementById('createPass'); // ChatGPT. The input password
+  const confirmInput = document.getElementById('confirmPass'); // ChatGPT. The input confirmed password
+  const statusBox    = document.getElementById('createStatus'); // ChatGPT. The status of the create account attempt
 
-      statusBox.textContent = ''; // ChatGPT. Empties the status box
-      statusBox.className = 'form-status'; // ChatGPT. removes the error and success modifiers from the form status
+  createForm.addEventListener('submit', async function (e) {  // ChatGPT. Waits for the submit button to be pressed.
+    e.preventDefault(); // ChatGPT. Keeps browser from resetting when a submit fails
 
-      if (!user || !pass || !confirm) { // ChatGPT. If a field is empty
-        statusBox.textContent = 'Please fill out all fields.'; // ChatGPT. Status box tells user to fill out the field
-        statusBox.classList.add('error'); // ChatGPT. Error status added
-        return; // ChatGPT. end loop
-      }
+    const user     = userInput.value.trim();      // ChatGPT. Username text with whitespace removed
+    const pass     = passInput.value;             // ChatGPT. First password text
+    const confirm  = confirmInput.value;          // ChatGPT. Confirm password text
 
-      if (pass !== confirm) { // ChatGPT. If the password and the confirmation attempt do not match
-        statusBox.textContent = 'Passwords do not match. Please try again.'; // ChatGPT. Status box tells user they do not match
-        statusBox.classList.add('error'); // ChatGPT. error message occurs
-        return; // ChatGPT. end loop
-      }
+    // Reset status box styles
+    statusBox.textContent = '';                   // ChatGPT. Empties the status box
+    statusBox.className   = 'form-status';        // ChatGPT. Base class, removes previous error/success
 
-      if (pass.length < 8) { // ChatGPT. if password is less than 8 characters
-        statusBox.textContent = 'Password must be at least 8 characters long.'; // ChatGPT. Tells user password must be 8 characters or more
-        statusBox.classList.add('error'); // ChatGPT. sets to error
-        return; // ChatGPT. end loop
-      }
+    // ===== Front-end validation =====
+    if (!user || !pass || !confirm) {             // ChatGPT. If a field is empty
+      statusBox.textContent = 'Please fill out all fields.';  // ChatGPT. Tells user to fill out the empty field
+      statusBox.classList.add('error');           // ChatGPT. Error status added
+      return; // ChatGPT. ends
+    }
 
-      // TODO: when you build your backend, send data with fetch() here:
-      // fetch('/api/create-account', { method: 'POST', body: JSON.stringify({ username: user, password: pass }) ... })
+    if (pass !== confirm) {                       // ChatGPT. If the password and the confirmation do not match
+      statusBox.textContent = 'Passwords do not match. Please try again.'; // ChatGPT. Tells user passwords do not match
+      statusBox.classList.add('error'); // ChatGPT. Sets status box to error
+      return; // ChatGPT. ends
+    }
 
-      statusBox.textContent = 'Account created (demo only). Connect backend next.'; // ChatGPT. Status box confirms success if nothing goes wrong
-      statusBox.classList.add('success'); // ChatGPT. success status added
+    if (pass.length < 8) {                        // ChatGPT. If password is less than 8 characters
+      statusBox.textContent = 'Password must be at least 8 characters long.'; // ChatGPT. Creates error message
+      statusBox.classList.add('error'); // ChatGPT. Adds error style to status
+      return; // ChatGPT. ends
+    } // ChatGPT.
 
-      // Optionally reset form
-      // this.reset();
-    });
+    // ===== Backend call to Flask =====
+    try {  // ChatGPT. Try catch 
+      statusBox.textContent = 'Creating account...';  // ChatGPT. Status box says creating account
+      statusBox.classList.add('info'); // ChatGPT. Sets style to info
+
+      const response = await fetch('/api/create-account', { // ChatGPT. Sends to the javascript server in the background
+        method: 'POST', // ChatGPT. Client to server data
+        headers: { 'Content-Type': 'application/json' }, // ChatGPT. As JSON
+        body: JSON.stringify({ // ChatGPT. Turn into JSON string
+          username: user, // ChatGPT. username JSON formatted
+          password: pass // ChatGPT. Password JSON formatted
+        }) // ChatGPT.
+      }); // ChatGPT.
+
+      const data = await response.json(); // ChatGPT. Store the response
+
+      // Expecting something like { ok: true/false, message / error }
+      if (!response.ok || !data.ok) { // ChatGPT. If the HTTP sending method failed
+        statusBox.textContent = data.error || 'Could not create account.'; // ChatGPT. Error message
+        statusBox.classList.remove('info'); // ChatGPT. Remove info style
+        statusBox.classList.add('error'); // ChatGPT. Add error style to status box
+        return; // ChatGPT. End
+      } // ChatGPT.
+
+      statusBox.textContent = data.message || 'Account created successfully!'; // ChatGPT. Sends status message telling user the account was created
+      statusBox.classList.remove('info'); // ChatGPT. Removes info style
+      statusBox.classList.add('success'); // ChatGPT. Adds success style
+
+      createForm.reset(); // ChatGPT. Resets create account page
+
+      // Optionally redirect to home / sign-in page after a short delay:
+      // setTimeout(() => { window.location.href = 'home.html'; }, 1000);
+
+    } catch (err) { // ChatGPT. If nothing goes through
+      console.error('Network or server error:', err); // ChatGPT. Error message on console log
+      statusBox.textContent = 'Network error. Please try again.'; // ChatGPT. Status box error message
+      statusBox.classList.remove('info'); // ChatGPT. Remove info style
+      statusBox.classList.add('error'); // ChatGPT. Add error style
+    } // ChatGPT.
+  }); // ChatGPT.
+}); // ChatGPT.
+
+
+
+
+    // ===== Pattern storage (front-end, localStorage) =====
+const PATTERN_STORAGE_KEY = "assistantCalendarPatterns"; // ChatGPT. Stores the array of the patterns
+
+function loadPatterns() { // ChatGPT. For loading the patterns on the menu
+  try {
+    const raw = localStorage.getItem(PATTERN_STORAGE_KEY); // ChatGPT. Gets whatever is stored in the key
+    if (!raw) return []; // ChatGPT. Ends if nothing is stored
+    const parsed = JSON.parse(raw); // ChatGPT. Turn into a JSON object
+    return Array.isArray(parsed) ? parsed : []; // ChatGPT. Return the array stored
+  } catch (err) { // ChatGPT. If the try statement doesn't work
+    console.error("Failed to load patterns:", err); // ChatGPT. Send a console error
+    return []; // ChatGPT. End
+  } // ChatGPT.
+} // ChatGPT.
+
+function savePatterns(patterns) { // ChatGPT. Saves the patterns
+  try { // ChatGPT. If things go right
+    localStorage.setItem(PATTERN_STORAGE_KEY, JSON.stringify(patterns)); // ChatGPT. Saves the pattern array to JSON
+  } catch (err) { // ChatGPT. If thing don't go right
+    console.error("Failed to save patterns:", err); // ChatGPT. Send error message
+  } // ChatGPT.
+} // ChatGPT.
+
+function ShowRibbon() { // ChatGPT. Function to unhide the ribbon
+  const sideMenu = document.getElementById("sideMenu"); // ChatGPT. Stores the side menu CSS
+  const ribbonBtn = document.querySelector(".RibbonClip"); // ChatGPT. Stores the Ribbonclip button CSS
+
+  if (!sideMenu || !ribbonBtn) return; // ChatGPT. If there is no value for the side menu or ribbon button end the function
+
+  const isOpen = sideMenu.classList.toggle("open"); // ChatGPT. Sets open to either true or false depending on whether or not the menu is open
+
+  ribbonBtn.textContent = isOpen ? "<<<" : ">>>"; // ChatGPT. If the ribbon is open button font is <<< otherwise it is >>>
+
+  document.body.classList.toggle("menu-open", isOpen); // ChatGPT. Adds menu-open class to the button so it moves with the menu. 
+}
+
+
+(function setupRibbonMenu() { // ChatGPT. Function to connect to the ribbon menu
+  const sideMenu = document.getElementById("sideMenu"); // ChatGPT. Stores SideMenu div
+  const patternList = document.getElementById("patternList"); // ChatGPT. Stores patternlist div
+  const helpBtn = document.getElementById("helpBtn"); // ChatGPT. Stores help button
+  const createEventBtn = document.getElementById("createEventBtn"); // ChatGPT. Stores create event button
+  if (createEventBtn) { // ChatGPT. if the create event button is there 
+    createEventBtn.addEventListener("click", () => { // ChatGPT. Upon click
+      window.location.href = "create.html"; // ChatGPT. Take to create event page
+  }); // ChatGPT.
+} // ChatGPT.
+
+  if (!sideMenu || !patternList) return; // ChatGPT. End if not on home page and there is no ribbon menu
+
+  if (helpBtn) { // ChatGPT. If there is a help button
+    helpBtn.addEventListener("click", () => { // ChatGPT. On click
+      window.location.href = "help.html"; // ChatGPT. Take to help page
+    }); // ChatGPT.
+  } // ChatGPT.
+
+  function renderPatternList() { // ChatGPT. For loading the user's patterns
+    const patterns = loadPatterns(); // ChatGPT. Load saved patterns
+    patternList.innerHTML = ""; // ChatGPT. Clear pattern list
+
+    if (!patterns.length) { // ChatGPT. If there are no patterns
+      patternList.innerHTML = 
+        '<p class="pattern-empty">No patterns yet. Create one in the event builder.</p>'; // ChatGPT. Send a message saying there are no patterns yet
+      return; // ChatGPT. end
+    } // ChatGPT.
+
+    patterns.forEach((p) => { // ChatGPT. Loop over everything in the pattern array
+      const item = document.createElement("div"); // ChatGPT. Create a div for each item in the array
+      item.className = "pattern-item"; // ChatGPT. Stores the name
+      item.dataset.id = p.id; // ChatGPT. Give the pattern an id
+
+      item.innerHTML = `
+        <div class="pattern-main">
+          <span class="pattern-color" style="background:${p.color || "#10b981"}"></span>
+          <span class="pattern-name">${p.name}</span>
+        </div>
+        <div class="pattern-actions">
+          <button type="button" class="pattern-btn edit-btn">Edit</button>
+          <button type="button" class="pattern-btn delete-btn">Delete</button>
+        </div>
+      `; // ChatGPT. Would show the color, name, edit and delete on each of the user's events
+
+      patternList.appendChild(item); // ChatGPT. Add the events to the list for the user to see
+    }); // ChatGPT.
+  } // ChatGPT.
+
+  patternList.addEventListener("click", (e) => { // ChatGPT. For when an event is clicked
+    const target = e.target; // ChatGPT. What was clicked
+    const item = target.closest(".pattern-item"); // ChatGPT.Finds the pattern row
+    if (!item) return; // ChatGPT. If there is no row ends
+
+    const id = item.dataset.id; // ChatGPT. Check if item has an id
+    if (!id) return; // ChatGPT. end if there is no id
+
+    if (target.classList.contains("edit-btn")) { // ChatGPT. If the edit button is clicked
+      // Go to edit page with pattern id in the query string
+      window.location.href = `edit.html?id=${encodeURIComponent(id)}`; // ChatGPT. Opens the edit page
+    } else if (target.classList.contains("delete-btn")) { // ChatGPT. If the delete button is clicked
+      if (!confirm("Delete this pattern and its data?")) return; // ChatGPT. Asks user to confirm that the pattern should be deleted
+
+      const patterns = loadPatterns().filter((p) => p.id !== id); // ChatGPT. If confirmed load the patterns and delete the one with the id of the one being deleted
+      savePatterns(patterns); // ChatGPT. Save the new array
+      renderPatternList(); // ChatGPT. Show the new list
+
+      // Later: also send a delete request to Flask backend here.
+      // fetch("/delete_pattern", { method: "POST", body: JSON.stringify({ id }) })
+    }
+  });
+
+  // Initial render
+  renderPatternList(); // ChatGPT. Fill the pattern list with the user's patterns
+
+  // Expose a hook so event builder can refresh list if home and builder share JS
+  window.refreshPatternList = renderPatternList; // ChatGPT. Refreshes to let the pattern change trigger wherever it needs to.
+})(); // ChatGPT.
