@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Assistant Calendar</title>
-    <link rel="stylesheet" href="homestyle.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}"> <!-- ChatGPT. Links to css file-->
     <link
       rel="stylesheet" 
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
@@ -47,7 +47,9 @@
   </div> <!-- ChatGPT. -->
 
    <div class="side-menu-actions"> <!-- ChatGPT. The container for the create event button -->
-    <button id="createEventBtn" class="menu-btn create-btn">+ Create Event</button> <!-- ChatGPT. Links to the create event page -->
+    <a href="{{ url_for('create_page') }}" class="menu-btn create-btn" id="createEventBtn">+ Create Event</a>
+
+
   </div> <!-- ChatGPT. -->
 
   <!-- Pattern section title -->
@@ -107,8 +109,7 @@
 
       <div class="create-cta"> <!-- ChatGPT. Container for the create account link -->
         <small>New here?</small> <!-- ChatGPT. Says, "new here?" above the sign in button-->
-        <a class="link-btn" href="createaccount.html" id="createAccountLink"> <!-- ChatGPT. Links to the create account page -->
-          Create new account </a> <!-- ChatGPT. Button Text -->
+        <a href="{{ url_for('createaccount_page') }}" class="link-btn auth-return">Create Account</a>
       </div> <!-- ChatGPT -->
     </div> <!-- ChatGPT -->
   </div> <!-- ChatGPT -->
@@ -127,7 +128,7 @@
           <div>Sun</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
           <div>Mon</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
           <div>Tue</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
-          <div>Wed</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <div>Wed</div> <!-- https://www.youtube.comWATCH?v=o1yMqPyYeAo -->
           <div>Thu</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
           <div>Fri</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
           <div>Sat</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
@@ -135,7 +136,6 @@
         <div class="days"></div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
       </div>
     </div>
-
-    <script src="homejs.js"></script>
+     <script src="{{ url_for('static', filename='homejs.js') }}"></script> <!-- ChatGPT. Links to JS file-->
   </body>
 </html>

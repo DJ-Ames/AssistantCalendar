@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assistant Calendar</title>
-    <link rel="stylesheet" href="homestyle.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}"> <!-- ChatGPT. Links to css file-->
     <link
       rel="stylesheet" 
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
@@ -68,13 +68,11 @@
           <button type="submit" class="btn primary"> 
             Create Account 
           </button> <!-- ChatGPT. The button to submit account information-->
-          <a class="link-btn auth-return" href="home.html" id="createAccountLink">
-            Return to Calendar
-          </a> <!-- ChatGPT. The button to return to the calendar page-->
+          <a href="{{ url_for('home_page') }}" class="link-btn auth-return" aria-label="Return to Home">Return to Calendar</a>
         </div> <!-- ChatGPT. -->
       </form> <!-- ChatGPT. -->
     </div> <!-- ChatGPT. -->
   </div> <!-- ChatGPT. -->
-    <script src="homejs.js"></script>
+      <script src="{{ url_for('static', filename='homejs.js') }}"></script> <!-- ChatGPT. Links to JS file-->
 </body>
 </html>

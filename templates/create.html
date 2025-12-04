@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Assistant Calendar</title>
-    <link rel="stylesheet" href="homestyle.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}"> <!-- ChatGPT. Links to css file-->
     <link
       rel="stylesheet" 
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
@@ -152,7 +152,7 @@
     <button type="submit" class="eb-submit">Submit</button> <!-- ChatGPT. The button to submit recurring event info-->
 
     <div class="eb-col"> <!-- ChatGPT. Formats home button to be in a column-->
-      <a href="home.html" class="link-btn auth-return" aria-label="Return to Home">Exit</a> <!-- ChatGPT. Button that returns user to home page-->
+      <a href="{{ url_for('home_page') }}" class="link-btn auth-return" aria-label="Return to Home">Exit</a> <!-- ChatGPT. Button that returns user to home page-->
       </div> <!-- ChatGPT. -->
 
 
@@ -226,6 +226,6 @@
         <div class="days"></div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
       </div>
     </div>
-     <script src="homejs.js"></script>
+      <script src="{{ url_for('static', filename='homejs.js') }}"></script> <!-- ChatGPT. Links to JS file-->
   </body>
 </html>

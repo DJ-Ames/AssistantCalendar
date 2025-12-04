@@ -5,14 +5,13 @@ CREATE DATABASE AssistantCalendar;
 USE AssistantCalendar;
 
 CREATE TABLE Users (
-    UserID INT PRIMARY KEY AUTO_INCREMENT, --ChatGPT. Automatically makes user ids
-    Username VARCHAR(20),
-    Password VARCHAR(40)
-    ADD UNIQUE (Username); --ChatGPT. Makes it so usernames can't repeat
+    UserID INT PRIMARY KEY AUTO_INCREMENT, 
+    Username VARCHAR(20) UNIQUE, 
+    Password VARCHAR(255)
 );
 
 CREATE TABLE Event (
-    EventID INT PRIMARY KEY AUTO_INCREMENT, --ChatGPT. Automatically makes event ids
+    EventID INT PRIMARY KEY AUTO_INCREMENT, 
     UserID INT,
     Name VARCHAR(20),
     Color VARCHAR(6),
@@ -24,7 +23,7 @@ CREATE TABLE Event (
 );
 
 CREATE TABLE Prompt (
-    PromptID INT PRIMARY KEY AUTO_INCREMENT, --ChatGPT. Automatically makes prompt ids
+    PromptID INT PRIMARY KEY AUTO_INCREMENT, 
     UserID INT,
     EventID INT,
     PromptText TEXT,
@@ -40,28 +39,3 @@ CREATE TABLE Cache (
     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (EventID) REFERENCES Event(EventID) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
--- Test inserts below
-
-INSERT INTO Users (UserID, Username, Password) VALUES
-(1, 'BuddyBoyTiger', 'TigerCat'),
-(2, 'Buster', 'Bustercat');
-
-INSERT INTO Event (EventID, UserID, Name, Color, Note, Start, End, EventType) VALUES
-(1, 1, 'Nap day', 'E61919', 'Sleep on these days', '2025-10-01', '2025-12-05', 'AIPrompt'),
-(2, 2, 'Dinner Table', 'FF69B4', 'Sleep on the dinner table', '2025-11-01', '2026-12-01', '223'),
-(3, 2, 'Gamer Chair', '00504B', 'Sleep on the gamer chair', '2025-11-05', '2026-12-01', 'PatternBuild');
-
-INSERT INTO Prompt (PromptID, UserID, EventID, PromptText) VALUES
-(1, 1, 1, 'Set my event to cover every day');
-
-INSERT INTO Cache (Times, EventID, UserID) VALUES
-('2025-10-01', 1, 1),
-('2025-10-02', 1, 1),
-('2025-10-03', 1, 1),
-('2025-11-01', 2, 2),
-('2025-11-02', 2, 2),
-('2025-11-03', 2, 2),
-('2025-11-04', 3, 2),
-('2025-11-05', 3, 2),
-('2025-11-06', 3, 2);
