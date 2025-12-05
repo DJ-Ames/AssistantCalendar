@@ -18,6 +18,24 @@
     <div id="userInfo" class="user-info"></div> <!-- ChatGPT. Container to display username after sign in-->
     <button class="open-modal-btn" id="openSignIn">Sign In</button> <!-- ChatGPT. Creates the button element that opens the sign in modal -->
 
+    <!-- Notes Panel - Shows notes for selected pattern -->
+    <div id="notesPanel" class="notes-panel"> <!-- ChatGPT. Container for the notes panel -->
+      <div class="notes-panel-header"> <!-- ChatGPT. Header section of the notes panel -->
+        <h3 class="notes-panel-title">Pattern Notes</h3> <!-- ChatGPT. Title of the panel -->
+      </div> <!-- ChatGPT. -->
+      <div class="notes-panel-content"> <!-- ChatGPT. Container for the note -->
+        <p id="notesPlaceholder" class="notes-placeholder">Select a pattern from the list to view its notes.</p> <!-- ChatGPT. Default text -->
+        <div id="notesDisplay" class="notes-display" style="display: none;"> <!-- ChatGPT. Contains the notes. -->
+          <div class="notes-pattern-info"> <!-- ChatGPT. Where the color and name is located -->
+            <span id="notesPatternColor" class="notes-pattern-color"></span> <!-- ChatGPT. Color display -->
+            <span id="notesPatternName" class="notes-pattern-name"></span> <!-- ChatGPT. Name display -->
+          </div> <!-- ChatGPT. -->
+          <div class="notes-divider"></div> <!-- ChatGPT. Line above the the note text -->
+          <p id="notesText" class="notes-text"></p> <!-- ChatGPT. Note text -->
+        </div> <!-- ChatGPT. -->
+      </div> <!-- ChatGPT. -->
+    </div> <!-- ChatGPT. -->
+
 
 
 
@@ -57,20 +75,16 @@
   
   <div id="patternList" class="pattern-list"> <!-- ChatGPT. shows a list of events the user created -->
   </div> <!-- ChatGPT. -->
+
+  <div class="side-menu-download"> <!-- ChatGPT. Container for .ics download button -->
+    <button type="button" class="menu-btn download-btn" id="downloadIcsBtn">
+      <i class="fas fa-download"></i> Download Calendar
+    </button> <!-- ChatGPT. Button to download .ics file along with download symbol -->
+  </div> <!-- ChatGPT. -->
 </nav> <!-- ChatGPT. -->
 
 
 
-
-
-
-
-
-
-
-    <div class="notes">
-      
-    </div>
     <div class="modal-overlay" id="modalOverlay" aria-hidden="true"></div> <!-- ChatGPT. creates a background over the rest of the screen when the modal is open-->
     <div class="modal" id="signInModal" aria-hidden="true"> <!-- ChatGPT. Main Modal Container -->
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="signin-title"> <!-- ChatGPT. Modal container that allows for the structure of the modal-->
