@@ -84,19 +84,43 @@ html { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   padding: 0.2rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
 }
 
-.days div { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+.days > .day-cell { /* ChatGPT. Style for the day cell */
   font-size: 1.4rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   margin: 0.3rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   width: calc(40.2rem / 7); /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   height: 5rem; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   display: flex; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
-  justify-content: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  flex-direction: column; /* ChatGPT. Stack contents vertically */
+  justify-content: flex-start; /* ChatGPT. Aligns to top */
   align-items: center; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5); /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   transition: background-color 0.2s; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+  padding-top: 0.5rem; /* ChatGPT. Adds padding at the top */
 }
 
-.days div:hover:not(.today) { /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
+.day-cell .day-number { /* ChatGPT. Style for the numbers of the day */
+  margin-bottom: 0.3rem; /* ChatGPT. Space between number and dots */
+}
+
+.event-dots { /* ChatGPT. Container for event dots */
+  display: flex; /* ChatGPT. Display dots in a row */
+  flex-wrap: wrap; /* ChatGPT. Allow dots to wrap to next line */
+  justify-content: center; /* ChatGPT. Center the dots */
+  align-items: flex-start; /* ChatGPT. Align dots to top */
+  gap: 0.2rem; /* ChatGPT. Gap between dots */
+  max-width: 100%; /* ChatGPT. Keep within the limits of the cell */
+  padding: 0 0.2rem; /* ChatGPT. horizontal padding */
+}
+
+.event-dot { /* ChatGPT. Event dot */
+  width: 0.6rem; /* ChatGPT. Dot width */
+  height: 0.6rem; /* ChatGPT. Dot height */
+  border-radius: 50%; /* ChatGPT. Make it circular */
+  flex-shrink: 0; /* ChatGPT. Don't shrink dots */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* ChatGPT. Shadow*/
+}
+
+.days .day-cell:hover:not(.today) { /* https://www.youtube.com/watch?v=o1yMqPyYeAo ChatGPT. Updated to use day-cell*/
   background-color: #262626; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   border: 0.2rem solid #777; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
   cursor: pointer; /* https://www.youtube.com/watch?v=o1yMqPyYeAo */
@@ -681,6 +705,32 @@ body.menu-open .ribbon { /* ChatGPT. Button position For when the ribbon is open
   opacity: 0.9; /* ChatGPT. Blends the font with the background color a bit*/ 
 }
 
+/* ===== Download Button Section ===== */
+
+.side-menu-download { /* ChatGPT. Container for the download button */
+  padding: 1rem; /* ChatGPT. Padding around the button */
+  border-top: 1px solid rgba(249, 250, 251, 0.08); /* ChatGPT. Border line above the button */
+  margin-top: auto; /* ChatGPT. Keeps beneath the menu */
+}
+
+.download-btn { /* ChatGPT. Style for the download button */
+  background: #3b82f6; /* ChatGPT. Background color */
+  color: #fff; /* ChatGPT. White text */
+  display: flex; /* ChatGPT. Flex display for objects*/
+  align-items: center; /* ChatGPT. Center items vertically */
+  justify-content: center; /* ChatGPT. Center items horizontally */
+  gap: 0.5rem; /* ChatGPT. Gap between objects */
+}
+
+.download-btn:hover { /* ChatGPT. When hovered over */
+  background: #2563eb; /* ChatGPT. Change color */
+}
+
+.download-btn:disabled { /* ChatGPT. Download button while disabled */
+  background: #6b7280; /* ChatGPT. Gray color */
+  cursor: not-allowed; /* ChatGPT. Change cursor to not allowed */
+  opacity: 0.7; /* ChatGPT. Make transparent */
+}
 
 
 /* More create account CSS */
@@ -700,4 +750,117 @@ body.menu-open .ribbon { /* ChatGPT. Button position For when the ribbon is open
 
 .form-status.info { /* ChatGPT. For during account creation */ 
   color: #555; /* ChatGPT. Displays gray */
+}
+
+/* ===== Notes Panel Styles ===== */
+
+.notes-panel { /* ChatGPT. Container for the notes panel */
+  position: fixed; /* ChatGPT. Keeps in place */
+  top: 100px; /* ChatGPT. Distance from top */
+  right: 20px; /* ChatGPT. Distance from right edge */
+  width: 280px; /* ChatGPT. Width of the panel */
+  max-height: calc(100vh - 140px); /* ChatGPT. Maximum height of the panel */
+  background: #1f2937; /* ChatGPT. Background color */
+  border-radius: 12px; /* ChatGPT. Rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* ChatGPT. Shadow around box */
+  color: #f9fafb; /* ChatGPT. White text color */
+  display: flex; /* ChatGPT. Flex layout */
+  flex-direction: column; /* ChatGPT. Stack vertically */
+  overflow: hidden; /* ChatGPT. Hide overflow */
+  z-index: 100; /* ChatGPT. Above other content but below modals */
+}
+
+.notes-panel-header { /* ChatGPT. Notes header */
+  padding: 1rem; /* ChatGPT. Padding */
+  border-bottom: 1px solid rgba(249, 250, 251, 0.1); /* ChatGPT. Bottom border */
+  background: rgba(0, 0, 0, 0.1); /* ChatGPT. background color */
+}
+
+.notes-panel-title { /* ChatGPT. Title text */
+  margin: 0; /* ChatGPT. Remove default margin */
+  font-size: 1rem; /* ChatGPT. Font size */
+  font-weight: 600; /* ChatGPT. Semi-bold */
+  color: #f9fafb; /* ChatGPT. Light text */
+}
+
+.notes-panel-content { /* ChatGPT. Content area of the panel */
+  padding: 1rem; /* ChatGPT. Padding */
+  flex: 1; /* ChatGPT. Take remaining space */
+  overflow-y: auto; /* ChatGPT. Scroll when there's an overflow */
+}
+
+.notes-placeholder { /* ChatGPT. Placeholder text when no pattern is selected */
+  color: #9ca3af; /* ChatGPT. Gray text */
+  font-size: 0.9rem; /* ChatGPT. Slightly smaller font */
+  text-align: center; /* ChatGPT. Center the text */
+  margin: 1rem 0; /* ChatGPT. Vertical margin */
+  line-height: 1.5; /* ChatGPT. Space between lines */
+}
+
+.notes-display { /* ChatGPT. Container for notes */
+  display: flex; /* ChatGPT. Flex display */
+  flex-direction: column; /* ChatGPT. Vertical flex */
+  gap: 0.75rem; /* ChatGPT. Gap between elements */
+}
+
+.notes-pattern-info { /* ChatGPT. Container for pattern name and color */
+  display: flex; /* ChatGPT. Flex display */
+  align-items: center; /* ChatGPT. Center items vertically */
+  gap: 0.5rem; /* ChatGPT. Gap between elements */
+}
+
+.notes-pattern-color { /* ChatGPT. Color circle */
+  width: 16px; /* ChatGPT. Circle width */
+  height: 16px; /* ChatGPT. Height */
+  border-radius: 50%; /* ChatGPT. Keeps round */
+  border: 1px solid rgba(17, 24, 39, 0.8); /* ChatGPT. Border */
+  flex-shrink: 0; /* ChatGPT. Prevents shrinking */
+}
+
+.notes-pattern-name { /* ChatGPT. Pattern name text */
+  font-weight: 600; /* ChatGPT. Semi-bold */
+  font-size: 1rem; /* ChatGPT. Font size */
+  color: #f9fafb; /* ChatGPT. White text */
+  overflow: hidden; /* ChatGPT. Hide overflow */
+  text-overflow: ellipsis; /* ChatGPT. Show ellipsis for long names */
+  white-space: nowrap; /* ChatGPT. No wrapping */
+}
+
+.notes-divider { /* ChatGPT. Divider line */
+  height: 1px; /* ChatGPT. Line height */
+  background: rgba(249, 250, 251, 0.1); /* ChatGPT. Background color */
+  margin: 0.25rem 0; /* ChatGPT. Vertical margin */
+}
+
+.notes-text { /* ChatGPT. Note text */
+  font-size: 0.9rem; /* ChatGPT. Font size */
+  color: #d1d5db; /* ChatGPT. Text color */
+  line-height: 1.6; /* ChatGPT. Distance between lines */
+  margin: 0; /* ChatGPT. Remove default margin */
+  white-space: pre-wrap; /* ChatGPT. Preserve line breaks */
+  word-wrap: break-word; /* ChatGPT. Wrap long words */
+}
+
+.notes-empty { /* ChatGPT. When pattern has no notes */
+  color: #6b7280; /* ChatGPT. Text color */
+  font-style: italic; /* ChatGPT. Italic text */
+}
+
+/* Pattern item selected state */
+.pattern-item.selected { /* ChatGPT. When pattern is selected */
+  background: rgba(16, 185, 129, 0.15); /* ChatGPT. Background color */
+  border-radius: 6px; /* ChatGPT. Rounded corners */
+}
+
+.pattern-item.selected .pattern-name { /* ChatGPT. Selected pattern's name */
+  color: #10b981; /* ChatGPT. Text color */
+}
+
+/* Make pattern items clickable */
+.pattern-main { /* ChatGPT. For the pattern names */
+  cursor: pointer; /* ChatGPT. Pointer cursor when hovered*/
+}
+
+.pattern-main:hover .pattern-name { /* ChatGPT. When hovered over name */
+  color: #10b981; /* ChatGPT. Changes color */
 }

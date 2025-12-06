@@ -1,11 +1,233 @@
+<!-- For the event edit page-->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Event - Assistant Calendar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}"> <!-- ChatGPT. Links to css file-->
+    <link
+      rel="stylesheet" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="userInfo" class="user-info"></div> <!-- ChatGPT. Container to display username after sign in-->
+    <button class="open-modal-btn" id="openSignIn">Sign In</button> <!-- ChatGPT. Creates the button element that opens the sign in modal -->
+
+    <!-- Event Editor (left sidebar) -->
+    <aside class="createEvent" aria-label="Event editor"> <!-- ChatGPT. Creates a div section to contain the sidebar and to connect to CSS -->
+      <form id="eventEditForm" novalidate> <!-- ChatGPT. Invalidates default browser form settings -->
+        <h3 class="eb-title">Edit Recurring Event</h3> <!-- ChatGPT. The heading of the page -->
+
+        <input type="hidden" id="eventId" name="eventId" /> <!-- ChatGPT. Stores the event ID in a hidden field -->
+
+        <!-- Pattern selector -->
+        <label class="eb-label" for="patternType">Pattern Type</label> <!-- ChatGPT. Label for the pattern select dropdown -->
+        <select id="patternType" class="eb-input" required> <!-- ChatGPT. Creates the dropdown. -->
+          <option value="" disabled>Select a pattern…</option> <!-- ChatGPT. The default dropdown option. Cannot be rechosen. -->
+          <option value="223">2-2-3 Pattern</option> <!-- ChatGPT. The option for the 2-2-3 pattern -->
+          <option value="every-x-days">Every X Days</option> <!-- ChatGPT. The dropdown option for the Every X Days Pattern -->
+          <option value="every-other-day">Every Other Day</option> <!-- ChatGPT. The dropdown for the Every Other Day Pattern-->
+          <option value="every-x-weekday">Every X Weekday</option> <!-- ChatGPT. The dropdown choice for the every X weekday Pattern -->
+          <option value="nth-day-year">The Xth Day of Every Year</option> <!-- ChatGPT. The dropdown choice for the every Xth day of Every Year Pattern. -->
+          <option value="biweekly">Biweekly Pattern Builder</option> <!-- ChatGPT. The dropdown choice for the Biweekly Pattern Builder-->
+          <option value="ai-prompt">AI Prompt</option> <!-- ChatGPT. The dropdown choice for the AI Prompt -->
+        </select> <!-- ChatGPT. -->
+
+        <!-- All options share the start and End Date prompts. -->
+        <div class="eb-col"> <!-- ChatGPT. Formats start date to be in a column-->
+          <label class="eb-label" for="startDate">Start Date</label> <!-- ChatGPT.  Label for the start date input-->
+          <input id="startDate" class="eb-input" type="date" required /> <!-- ChatGPT. The Input for the start date. In date format and required. -->
+        </div> <!-- ChatGPT. -->
+        <div class="eb-col"> <!-- ChatGPT. Formats the end date to be in a column-->
+          <label class="eb-label" for="endDate">End Date</label> <!-- ChatGPT. Label above the End Date input -->
+          <input id="endDate" class="eb-input" type="date" required /> <!-- ChatGPT. The input for the end date. In date format and required. -->
+        </div> <!-- ChatGPT. -->
+
+        <label class="eb-label" for="patternName">Name</label> <!-- ChatGPT. Label above the Name Input-->
+        <input id="patternName" class="eb-input" type="text" placeholder="e.g., Work" required /> <!-- ChatGPT. Text input for a user to enter the event name. Uses placeholder. -->
+
+        <label class="eb-label" for="patternNote">Note</label> <!-- ChatGPT. Label above the Note text input. -->
+        <textarea id="patternNote" class="eb-input" rows="2" placeholder="Optional note…"></textarea> <!-- ChatGPT. Creates a two row high text for a user to input a note.-->
+
+        <!-- 2-2-3 Pattern -->
+        <section class="eb-section" data-for="223" hidden> <!-- ChatGPT. Matches with the 223 option value so Javascript knows when to show it. Hidden default.-->
+          <p class="eb-hint">This pattern typically repeats 2 days on, 2 days off, 3 days on (or similar).</p> <!-- ChatGPT. A description of how a 2-2-3 schedule works-->
+        </section> <!-- ChatGPT. -->
+
+        <!-- Every X Days (needs X and color) -->
+        <section class="eb-section" data-for="every-x-days" hidden>  <!-- ChatGPT. Matches with the every-x-days option value so Javascript knows when to show it. Hidden default.-->
+          <label class="eb-label" for="xDaysInterval">Every how many days?</label> <!-- ChatGPT. Label text above the days input-->
+          <input id="xDaysInterval" class="eb-input" type="number" min="1" step="1" placeholder="e.g., 3" /> <!-- ChatGPT. Input text. Only allows whole numbers greater than one. Has a placeholder.-->
+        </section> <!-- ChatGPT. -->
+
+        <!-- Every Other Day (no extra fields) -->
+        <section class="eb-section" data-for="every-other-day" hidden> <!-- ChatGPT. Matches with the every-other-day option value so Javascript knows when to show it. Hidden default.-->
+          <p class="eb-hint">Occurs every other day between Start and End dates.</p> <!-- ChatGPT. Description text-->
+        </section> <!-- ChatGPT. -->
+
+        <!-- Every X Weekday (choose weekday) -->
+        <section class="eb-section" data-for="every-x-weekday" hidden> <!-- ChatGPT. Matches with the every-x-weekday option value so Javascript knows when to show it. Hidden default.-->
+          <label class="eb-label" for="weekday">Day of the week</label> <!-- ChatGPT. Label above the day of the week dropdown that picks the weekday that repeats -->
+          <select id="weekday" class="eb-input"> <!-- ChatGPT. The day of the week dropdown selector-->
+            <option value="" disabled>Select a weekday…</option> <!-- ChatGPT. The default selection that can't be reselected-->
+            <option value="0">Sunday</option> <!-- ChatGPT. Option for the weekday dropdown-->
+            <option value="1">Monday</option> <!-- ChatGPT. Option for the weekday dropdown-->
+            <option value="2">Tuesday</option> <!-- ChatGPT. Option for the weekday dropdown-->
+            <option value="3">Wednesday</option> <!-- ChatGPT. Option for the weekday dropdown-->
+            <option value="4">Thursday</option> <!-- ChatGPT. Option for the weekday dropdown-->
+            <option value="5">Friday</option> <!-- ChatGPT. Option for the weekday dropdown-->
+            <option value="6">Saturday</option> <!-- ChatGPT. Option for the weekday dropdown-->
+          </select> <!-- ChatGPT. -->
+          <p class="eb-hint">Example: every Monday within the chosen date range.</p> <!-- ChatGPT. Description of the event type -->
+        </section> <!-- ChatGPT. -->
+
+        <!-- The Xth Day of Every Year -->
+        <section class="eb-section" data-for="nth-day-year" hidden> <!-- ChatGPT. Matches with the nth-day-year option value so Javascript knows when to show it. Hidden default.-->
+          <div class="eb-row"> <!-- ChatGPT. Formats the month and day selector to be side by side-->
+            <div class="eb-col"> <!-- ChatGPT. Keeps the month and day selector in a column with the other items -->
+              <label class="eb-label" for="monthOfYear">Month</label> <!-- ChatGPT. Text displayed above the month dropdown selector.-->
+              <select id="monthOfYear" class="eb-input"> <!-- ChatGPT. Creates a dropdown selection for the user to choose the month of the day that repeats-->
+                <option value="" disabled>Select a month…</option> <!-- ChatGPT. The default text for the menu-->
+                <option value="1">January</option><option value="2">February</option> <!-- ChatGPT. Options for the month dropdown.-->
+                <option value="3">March</option><option value="4">April</option> <!-- ChatGPT. Options for the month dropdown.-->
+                <option value="5">May</option><option value="6">June</option> <!-- ChatGPT. Options for the month dropdown.-->
+                <option value="7">July</option><option value="8">August</option> <!-- ChatGPT. Options for the month dropdown.-->
+                <option value="9">September</option><option value="10">October</option> <!-- ChatGPT. Options for the month dropdown.-->
+                <option value="11">November</option><option value="12">December</option> <!-- ChatGPT. Options for the month dropdown.-->
+              </select> <!-- ChatGPT. -->
+            </div> <!-- ChatGPT. -->
+            <div class="eb-col"> <!-- ChatGPT. Keeps the Day of the Month selector in a column with the other items (Besides the month selector which it's next to) -->
+              <label class="eb-label" for="dayOfMonth">Day of month</label> <!-- ChatGPT. Label above the day selector.-->
+              <input id="dayOfMonth" class="eb-input" type="number" min="1" max="31" placeholder="e.g., 15" /> <!-- ChatGPT. An input box that accepts numbers between 1 and 31 and has a placeholder.-->
+            </div> <!-- ChatGPT. -->
+          </div> <!-- ChatGPT. -->
+          <p class="eb-hint">Example: January 15th every year, bounded by Start and End.</p> <!-- ChatGPT. Gives an example of how the event type would work-->
+        </section> <!-- ChatGPT. -->
+
+        <!-- Biweekly Pattern Builder (two weeks grid) -->
+        <section class="eb-section" data-for="biweekly" hidden> <!-- ChatGPT. Matches with the biweekly option value so Javascript knows when to show it. Hidden default.-->
+          <p class="eb-label">Select days (Week 1 | Week 2)</p> <!-- ChatGPT. A label explaining the format of the grid-->
+          <div class="biweekly-grid" role="group" aria-label="Biweekly day picker"> <!-- ChatGPT. Contains the biweekly buttons and groups them for assistive software-->
+            <!-- Week 1 -->
+            <div class="week-col" data-week="1" aria-label="Week 1"> <!-- ChatGPT. Contains the first week's days -->
+              <button type="button" class="day-toggle" data-day="0">S</button> <!-- ChatGPT. Sunday of the first week. Allows Javascript to toggle the day and numbers the day-->
+              <button type="button" class="day-toggle" data-day="1">M</button> <!-- ChatGPT. Monday of the first week-->
+              <button type="button" class="day-toggle" data-day="2">T</button> <!-- ChatGPT. Tuesday of the first week-->
+              <button type="button" class="day-toggle" data-day="3">W</button> <!-- ChatGPT. Wednesday of the first week-->
+              <button type="button" class="day-toggle" data-day="4">T</button> <!-- ChatGPT. Thursday of the first week-->
+              <button type="button" class="day-toggle" data-day="5">F</button> <!-- ChatGPT. Friday of the first week-->
+              <button type="button" class="day-toggle" data-day="6">S</button> <!-- ChatGPT. Saturday of the first week-->
+            </div> <!-- ChatGPT. -->
+            <!-- Week 2 -->
+            <div class="week-col" data-week="2" aria-label="Week 2"> <!-- ChatGPT. Contains the second week's days -->
+              <button type="button" class="day-toggle" data-day="0">S</button> <!-- ChatGPT. Sunday of the first week. Allows Javascript to toggle the day and numbers the day-->
+              <button type="button" class="day-toggle" data-day="1">M</button> <!-- ChatGPT. Monday of the first week-->
+              <button type="button" class="day-toggle" data-day="2">T</button> <!-- ChatGPT. Tuesday of the first week-->
+              <button type="button" class="day-toggle" data-day="3">W</button> <!-- ChatGPT. Wednesday of the first week-->
+              <button type="button" class="day-toggle" data-day="4">T</button> <!-- ChatGPT. Thursday of the first week-->
+              <button type="button" class="day-toggle" data-day="5">F</button> <!-- ChatGPT. Friday of the first week-->
+              <button type="button" class="day-toggle" data-day="6">S</button> <!-- ChatGPT. Saturday of the first week-->
+            </div> <!-- ChatGPT. -->
+          </div> <!-- ChatGPT. -->
+          <p class="eb-hint">Click letters to toggle. Selected days turn green.</p> <!-- ChatGPT. Tells the user how to make this type of event-->
+        </section> <!-- ChatGPT. -->
+
+        <!-- AI Prompt -->
+        <section class="eb-section" data-for="ai-prompt" hidden> <!-- ChatGPT. Matches with the ai-prompt option value so Javascript knows when to show it. Hidden default.-->
+          <label class="eb-label" for="aiPromptText">Prompt for the AI</label> <!-- ChatGPT. Label for the text box below-->
+          <textarea id="aiPromptText" class="eb-input" rows="4" placeholder="Describe how to build the recurring series…"></textarea> <!-- ChatGPT. A text box with 4 visible rows for a user to input ai prompts -->
+        </section> <!-- ChatGPT. -->
+
+        <div class="eb-col"> <!-- ChatGPT. Formats the color selection to be in a column-->
+          <label class="eb-label" for="colorChoice">Color</label> <!-- ChatGPT. Label above the color input -->
+          <input id="colorChoice" class="eb-input" type="color" value="#10b981" /> <!-- ChatGPT. Allows user to select the color of their event-->
+        </div> <!-- ChatGPT. -->
+
+        <!-- Submit -->
+        <button type="submit" class="eb-submit">Save Changes</button> <!-- ChatGPT. The button to submit recurring event info-->
+
+        <div class="eb-col"> <!-- ChatGPT. Formats home button to be in a column-->
+          <a href="{{ url_for('home_page') }}" class="link-btn auth-return" aria-label="Return to Home">Cancel</a> <!-- ChatGPT. Button that returns user to home page-->
+        </div> <!-- ChatGPT. -->
+
+        <!-- Optional preview block -->
+        <pre id="eventPreview" class="eb-preview" aria-live="polite" hidden></pre> <!-- ChatGPT. Shows submitted information beneath the exit button in JSON format-->
+      </form> <!-- ChatGPT. -->
+    </aside> <!-- ChatGPT. -->
+
+    <!-- Sign In Modal (same as other pages) -->
+    <div class="modal-overlay" id="modalOverlay" aria-hidden="true"></div> <!-- ChatGPT. creates a background over the rest of the screen when the modal is open-->
+    <div class="modal" id="signInModal" aria-hidden="true"> <!-- ChatGPT. Main Modal Container -->
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="signin-title"> <!-- ChatGPT. Modal container that allows for the structure of the modal-->
+      <div class="modal-header"> <!-- ChatGPT. Initiates header -->
+        <div class="modal-title" id="signin-title">Sign in</div> <!-- ChatGPT. "Sign in" Title-->
+        <button class="modal-close" id="closeSignIn" aria-label="Close (Esc)"> <!-- ChatGPT. Cross button that cancels sign in modal -->
+          <i class="fas fa-times"></i> <!-- ChatGPT. The exit symbol -->
+        </button> <!-- ChatGPT -->
+      </div> <!-- ChatGPT -->
+
+      <form class="modal-body" id="signinForm" novalidate> <!-- ChatGPT. Creates the area of the modal where you enter your sign in information -->
+        <div class="field"> <!-- ChatGPT. Creates the container for the username input. -->
+          <label class="label" for="username">Username</label> <!-- ChatGPT. Displays "Username" -->
+          <div class="input-wrap"> <!-- ChatGPT. Contains the input for styling purposes -->
+            <input class="input" id="username" name="username" type="text" autocomplete="username" required /> <!-- ChatGPT. Username input box. Cannot be empty. Allows browser to autocomplete password.  -->
+          </div> <!-- ChatGPT -->
+          <div class="helper">Enter the username you registered with.</div> <!-- ChatGPT. Text beneath the textbox -->
+        </div> <!-- ChatGPT -->
+
+        <div class="field"> <!-- ChatGPT. Container for password input. -->
+          <label class="label" for="password">Password</label> <!-- ChatGPT. Displays "password" -->
+          <div class="input-wrap"> <!-- ChatGPT. Styling for the password box -->
+            <input class="input" id="password" name="password" type="password" autocomplete="current-password" required /> <!-- ChatGPT. Password input box. "type='password'" keeps the input hidden -->
+            <button type="button" class="eye-icon" id="togglePwd" aria-label="Show password"> <!-- ChatGPT. Creates a button to show the password and an ID for javascript to use -->
+              <i class="far fa-eye"></i> <!-- ChatGPT. Eye icon -->
+            </button> <!-- ChatGPT -->
+          </div> <!-- ChatGPT -->
+          <div class="helper">Minimum 8 characters.</div> <!-- ChatGPT. Text beneath the textbox -->
+        </div> <!-- ChatGPT -->
+
+        <div class="actions"> <!-- ChatGPT. Formats the sign in button -->
+          <button type="submit" class="btn primary">Sign in</button> <!-- ChatGPT. Button to submit informationg. making it primary gives it color.  -->
+        </div> <!-- ChatGPT -->
+
+      </form> <!-- ChatGPT -->
+
+      <div class="create-cta"> <!-- ChatGPT. Container for the create account link -->
+        <small>New here?</small> <!-- ChatGPT. Says, "new here?" above the sign in button-->
+        <a class="link-btn" href="createaccount.html" id="createAccountLink"> <!-- ChatGPT. Links to the create account page -->
+          Create new account </a> <!-- ChatGPT. Button Text -->
+      </div> <!-- ChatGPT -->
+    </div> <!-- ChatGPT -->
+  </div> <!-- ChatGPT -->
+    <div class="container"> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+      <div class="calendar"> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+        <div class="month"> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <i class="fas fa-angle-left prev"></i> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <div class="date"> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+            <h1></h1> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+            <h2></h2> 
+            <p></p> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          </div>
+          <i class="fas fa-angle-right next"></i> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+        </div>
+        <div class="weekdays"> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <div>Sun</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <div>Mon</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <div>Tue</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <div>Wed</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <div>Thu</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <div>Fri</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+          <div>Sat</div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+        </div>
+        <div class="days"></div> <!-- https://www.youtube.com/watch?v=o1yMqPyYeAo -->
+      </div>
+    </div>
+      <script src="{{ url_for('static', filename='homejs.js') }}"></script> <!-- ChatGPT. Links to JS file-->
+  </body>
 </html>

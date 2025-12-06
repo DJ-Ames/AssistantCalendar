@@ -1,9 +1,10 @@
 # ChatGPT. Imports python libraries
-from flask import Flask, request, jsonify, session, render_template, url_for # ChatGPT.
+from flask import Flask, request, jsonify, session, render_template, url_for, Response # ChatGPT. 
 import mysql.connector  # ChatGPT.
 from mysql.connector import Error  # ChatGPT.
 from werkzeug.security import generate_password_hash, check_password_hash  # ChatGPT.
 from datetime import datetime, date, timedelta  # ChatGPT. For date handling
+import uuid  # ChatGPT. 
 
 app = Flask(__name__)  # ChatGPT.Tells python the name of the module so it can find necessary resources
 
@@ -592,6 +593,88 @@ def get_event_dates(event_id): # ChatGPT. function to get event dates
 
 
 # -------------------------------------------------
+#  GET ALL CACHED DATES FOR CALENDAR DISPLAY
+# -------------------------------------------------
+@app.route("/api/calendar-dates", methods=["GET"]) # ChatGPT. Route to get dates for calendar display
+def get_calendar_dates(): # ChatGPT. Function to get all event dates for calendar
+    """
+    Returns all cached dates with their event colors for the logged-in user.
+    Optionally filter by month/year with query params: ?year=2025&month=12
+    """ # ChatGPT. Docstring
+    user_id = session.get("user_id") # ChatGPT. Get user id
+    if not user_id: # ChatGPT. If not logged in
+        return jsonify({"ok": True, "dates": {}}), 200 # ChatGPT. Return empty dates 
+
+    conn = None # ChatGPT. Establish connection variable
+    cursor = None # ChatGPT. Establish cursor variable
+
+    try: # ChatGPT. Try first
+        conn = get_db_connection() # ChatGPT. Connect to database
+        cursor = conn.cursor(dictionary=True) # ChatGPT. Create cursor
+
+        # Get optional year/month filters
+        year = request.args.get("year", type=int) # ChatGPT. Get input year
+        month = request.args.get("month", type=int) # ChatGPT. Get input months]
+
+        # Build query to get all cached dates with event info
+        if year and month: # ChatGPT. If filtering by month
+            # Get dates for specific month 
+            start_date = date(year, month, 1) - timedelta(days=7) # ChatGPT. Start a week before
+            if month == 12: # ChatGPT. If December
+                end_date = date(year + 1, 1, 1) + timedelta(days=7) # ChatGPT. End in January
+            else: # ChatGPT. Otherwise
+                end_date = date(year, month + 1, 1) + timedelta(days=7) # ChatGPT. End a week after
+            
+            cursor.execute( # ChatGPT. SQL query that filters the dates
+                """
+                SELECT c.Times, e.EventID, e.Name, e.Color
+                FROM Cache c
+                JOIN Event e ON c.EventID = e.EventID
+                WHERE c.UserID = %s AND c.Times >= %s AND c.Times < %s
+                ORDER BY c.Times ASC, e.EventID ASC
+                """,
+                (user_id, start_date, end_date)
+            )
+        else: # ChatGPT. If filtering by year
+            cursor.execute( # ChatGPT. SQL query searching for user id
+                """
+                SELECT c.Times, e.EventID, e.Name, e.Color
+                FROM Cache c
+                JOIN Event e ON c.EventID = e.EventID
+                WHERE c.UserID = %s
+                ORDER BY c.Times ASC, e.EventID ASC
+                """,
+                (user_id,)
+            )
+
+        rows = cursor.fetchall() # ChatGPT. Get all results
+
+        # Group by date - each date can have multiple events
+        dates_map = {} # ChatGPT. Stores event dates
+        for row in rows: # ChatGPT. Loops through results
+            date_str = row["Times"].isoformat() # ChatGPT. Convert date to string
+            if date_str not in dates_map: # ChatGPT. If the date is not stored
+                dates_map[date_str] = [] # ChatGPT. Make list empty
+            dates_map[date_str].append({ # ChatGPT. Add event info in JSON
+                "eventId": row["EventID"],
+                "name": row["Name"],
+                "color": row["Color"]
+            })
+
+        return jsonify({"ok": True, "dates": dates_map}), 200 # ChatGPT. Return the dates with JSON
+
+    except Error as e: # ChatGPT. If there is an error
+        print("Database error in get_calendar_dates:", e) # ChatGPT. Print error
+        return jsonify({"ok": False, "error": "Database error."}), 500 # ChatGPT. Return error message through JSON
+
+    finally: # ChatGPT. After everything
+        if cursor is not None: # ChatGPT. If cursor exists
+            cursor.close() # ChatGPT. Close cursor
+        if conn is not None: # ChatGPT. If connection exists
+            conn.close() # ChatGPT. Close connection
+
+
+# -------------------------------------------------
 #  DELETE EVENT
 # -------------------------------------------------
 @app.route("/api/events/<int:event_id>", methods=["DELETE"]) # ChatGPT. Route for delete requests
@@ -633,6 +716,308 @@ def delete_event(event_id): # ChatGPT. function to delete events
             cursor.close() # ChatGPT. Close the cursor
         if conn is not None: # ChatGPT. if there is a connection
             conn.close() # ChatGPT. close the connection
+
+
+# -------------------------------------------------
+#  DOWNLOAD ICS FILE
+# -------------------------------------------------
+@app.route("/api/download-ics", methods=["GET"]) # ChatGPT. Route to download ICS file
+def download_ics(): # ChatGPT. Function to create and download ICS file
+    """
+    Generates an ICS (iCalendar) file from the user's cached event dates.
+    """ # ChatGPT. Docstring
+    user_id = session.get("user_id") # ChatGPT. Get user id
+    username = session.get("username", "user") # ChatGPT. Get username for filename
+    
+    if not user_id: # ChatGPT. If not logged in
+        return jsonify({"ok": False, "error": "You must be logged in to download."}), 401 # ChatGPT. Return error
+
+    conn = None # ChatGPT. Establish connection variable
+    cursor = None # ChatGPT. Establish cursor variable
+
+    try: # ChatGPT. Try first
+        conn = get_db_connection() # ChatGPT. Connect to database
+        cursor = conn.cursor(dictionary=True) # ChatGPT. Create cursor
+
+        # Get all cached dates with event info for this user
+        cursor.execute( # ChatGPT. SQL query to get all event data
+            """
+            SELECT c.Times, e.EventID, e.Name, e.Note, e.Color
+            FROM Cache c
+            JOIN Event e ON c.EventID = e.EventID
+            WHERE c.UserID = %s
+            ORDER BY c.Times ASC, e.EventID ASC
+            """,
+            (user_id,)
+        )
+        rows = cursor.fetchall() # ChatGPT. Store all results
+
+        if not rows: # ChatGPT. If no events found
+            return jsonify({"ok": False, "error": "No events to download."}), 404 # ChatGPT. Return error
+
+        # Build the ICS file content
+        ics_lines = [] # ChatGPT. List to store ICS lines
+        ics_lines.append("BEGIN:VCALENDAR") # ChatGPT. Start of ICS file
+        ics_lines.append("VERSION:2.0") # ChatGPT. ICS version
+        ics_lines.append("PRODID:-//Assistant Calendar//EN") # ChatGPT. Product identifier
+        ics_lines.append("CALSCALE:GREGORIAN") # ChatGPT. Calendar type
+        ics_lines.append("METHOD:PUBLISH") # ChatGPT. Making public
+        ics_lines.append("X-WR-CALNAME:Assistant Calendar") # ChatGPT. Name
+
+        processed = set() # ChatGPT. Tracks events to avoid duplicates
+
+        for row in rows: # ChatGPT. Loop through each cached date
+            event_date = row["Times"] # ChatGPT. Get the date
+            event_id = row["EventID"] # ChatGPT. Get the event ID
+            event_name = row["Name"] or "Untitled Event" # ChatGPT. Get event name
+            event_note = row["Note"] or "" # ChatGPT. Get event note
+
+            # Create a unique key for this event occurrence
+            event_key = f"{event_id}-{event_date.isoformat()}" # ChatGPT. Unique key
+            if event_key in processed: # ChatGPT. Skip if already processed
+                continue # ChatGPT. Continue to next row
+            processed.add(event_key) # ChatGPT. Mark as processed
+
+            # Generate a unique ID for this event instance
+            uid = f"{event_id}-{event_date.isoformat()}@assistantcalendar" # ChatGPT. Unique ID for the event
+
+            # Format date as YYYYMMDD for all-day event
+            date_str = event_date.strftime("%Y%m%d") # ChatGPT. Set format date
+
+            # Get current timestamp for DTSTAMP
+            now = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ") # ChatGPT. Current UTC time
+
+            # Escape special characters in text fields
+            event_name_escaped = escape_ics_text(event_name) # ChatGPT. Escape name for when ecountering certain characters
+            event_note_escaped = escape_ics_text(event_note) # ChatGPT. Escape note for when ecountering certain characters
+
+            # Add VEVENT
+            ics_lines.append("BEGIN:VEVENT") # ChatGPT. Start event 
+            ics_lines.append(f"UID:{uid}") # ChatGPT. ID
+            ics_lines.append(f"DTSTAMP:{now}") # ChatGPT. Timestamp
+            ics_lines.append(f"DTSTART;VALUE=DATE:{date_str}") # ChatGPT. Start date
+            ics_lines.append(f"DTEND;VALUE=DATE:{date_str}") # ChatGPT. End date 
+            ics_lines.append(f"SUMMARY:{event_name_escaped}") # ChatGPT. Event title
+            if event_note_escaped: # ChatGPT. If there's a note
+                ics_lines.append(f"DESCRIPTION:{event_note_escaped}") # ChatGPT. Show note
+            ics_lines.append("TRANSP:TRANSPARENT") # ChatGPT. Show as free
+            ics_lines.append("END:VEVENT") # ChatGPT. End event
+
+        ics_lines.append("END:VCALENDAR") # ChatGPT. End .ics file
+
+        # Join all lines with CRLF as per ICS spec
+        ics_content = "\r\n".join(ics_lines) + "\r\n" # ChatGPT. Joins the content as a single string
+
+        # Create the response with proper headers for file download
+        response = Response( # ChatGPT. Information for the file
+            ics_content,
+            mimetype="text/calendar",
+            headers={
+                "Content-Disposition": f"attachment; filename=assistant_calendar_{username}.ics"
+            }
+        ) # ChatGPT. Downloads as an ics file and formats the file.
+        return response # ChatGPT. Return the file
+
+    except Error as e: # ChatGPT. If error
+        print("Database error in download_ics:", e) # ChatGPT. Print error
+        return jsonify({"ok": False, "error": "Database error."}), 500 # ChatGPT. Return error with JSON
+
+    finally: # ChatGPT. After everything
+        if cursor is not None: # ChatGPT. If cursor exists
+            cursor.close() # ChatGPT. Close cursor
+        if conn is not None: # ChatGPT. If connection exists
+            conn.close() # ChatGPT. Close connection
+
+
+def escape_ics_text(text): # ChatGPT. To escape special characters in the ICS file
+    """
+    Escape special characters for ICS format.
+    """ # ChatGPT. Docstring
+    if not text: # ChatGPT. If no text
+        return "" # ChatGPT. Return empty string
+    text = text.replace("\\", "\\\\") # ChatGPT. Escape backslashes
+    text = text.replace(";", "\\;") # ChatGPT. Escape semicolons
+    text = text.replace(",", "\\,") # ChatGPT. Escape commas
+    text = text.replace("\n", "\\n") # ChatGPT. Escape newlines
+    text = text.replace("\r", "") # ChatGPT. Remove carriage returns
+    return text # ChatGPT. Return escaped text
+
+# -------------------------------------------------
+#  GET SINGLE EVENT - Fetch one event for editing
+# -------------------------------------------------
+@app.route("/api/events/<int:event_id>", methods=["GET"])  # ChatGPT. Route to get an event to edit
+def get_single_event(event_id):  # ChatGPT. Function to get the event information
+    """
+    Returns a single event with all its details for editing.
+    """  # ChatGPT. Docstring
+    user_id = session.get("user_id")  # ChatGPT. Get user id
+    if not user_id:  # ChatGPT. If not logged in
+        return jsonify({"ok": False, "error": "You must be logged in."}), 401  # ChatGPT. Return error in JSON
+
+    conn = None  # ChatGPT. Establish connection variable
+    cursor = None  # ChatGPT. Establish cursor variable
+
+    try:  # ChatGPT. Try first
+        conn = get_db_connection()  # ChatGPT. Connect to database
+        cursor = conn.cursor(dictionary=True)  # ChatGPT. Create cursor
+
+        # Get the event
+        cursor.execute(  # ChatGPT. SQL to get event
+            """
+            SELECT EventID, Name, Color, Note, Start, End, EventType
+            FROM Event
+            WHERE EventID = %s AND UserID = %s
+            """,
+            (event_id, user_id)
+        )
+        event = cursor.fetchone()  # ChatGPT. Store the event
+
+        if not event:  # ChatGPT. If event not found
+            return jsonify({"ok": False, "error": "Event not found."}), 404  # ChatGPT. Return error
+
+        # Convert dates to strings
+        if event["Start"]:  # ChatGPT. If start date exists
+            event["Start"] = event["Start"].isoformat()  # ChatGPT. Convert from SQL to ISO format
+        if event["End"]:  # ChatGPT. If end date exists
+            event["End"] = event["End"].isoformat()  # ChatGPT. Convert from SQL to ISO format
+
+        # If it's an AI prompt event, get the prompt text
+        if event["EventType"] == "ai-prompt":  # ChatGPT. If AI prompt type
+            cursor.execute(  # ChatGPT. SQL to retrieve the prompt
+                "SELECT PromptText FROM Prompt WHERE EventID = %s AND UserID = %s",
+                (event_id, user_id)
+            )
+            prompt_row = cursor.fetchone()  # ChatGPT. Store the prompt
+            event["aiPrompt"] = prompt_row["PromptText"] if prompt_row else ""  # ChatGPT. Add the prompttext to the event
+
+        return jsonify({"ok": True, "event": event}), 200  # ChatGPT. Return the event to the front end
+
+    except Error as e:  # ChatGPT. If error
+        print("Database error in get_single_event:", e)  # ChatGPT. Print error
+        return jsonify({"ok": False, "error": "Database error."}), 500  # ChatGPT. Return error with JSON
+
+    finally:  # ChatGPT. After everything
+        if cursor is not None:  # ChatGPT. If cursor exists
+            cursor.close()  # ChatGPT. Close cursor
+        if conn is not None:  # ChatGPT. If connection exists
+            conn.close()  # ChatGPT. Close connection
+
+
+# -------------------------------------------------
+#  UPDATE EVENT - Update an existing event
+# -------------------------------------------------
+@app.route("/api/events/<int:event_id>", methods=["PUT"])  # ChatGPT. Route to update event
+def update_event(event_id):  # ChatGPT. Function to update event
+    """
+    Updates an existing event and regenerates its cached dates.
+    """  # ChatGPT. Docstring
+    user_id = session.get("user_id")  # ChatGPT. Get user id
+    if not user_id:  # ChatGPT. If not logged in
+        return jsonify({"ok": False, "error": "You must be logged in."}), 401  # ChatGPT. Return error
+
+    payload = request.get_json(silent=True)  # ChatGPT. Get JSON data
+    if not payload:  # ChatGPT. If no payload
+        return jsonify({"ok": False, "error": "Missing or invalid JSON body."}), 400  # ChatGPT. Return error
+
+    pattern_type = payload.get("patternType")  # ChatGPT. Get pattern type
+    start = parse_iso_date(payload.get("startDate"))  # ChatGPT. Get start date
+    end = parse_iso_date(payload.get("endDate"))  # ChatGPT. Get end date
+    name = (payload.get("name") or "").strip()  # ChatGPT. Get name remove spaces
+    note = (payload.get("note") or "").strip()  # ChatGPT. Get note remove spaces
+    color = (payload.get("color") or "").lstrip("#") or None  # ChatGPT. Get color and format in hex color
+
+    if not pattern_type or not start or not end or not name:  # ChatGPT. If missing start, end, patterntype or name
+        return jsonify({"ok": False, "error": "Missing required fields."}), 400  # ChatGPT. Return error
+
+    conn = None  # ChatGPT. Establish connection variable
+    cursor = None  # ChatGPT. Establish cursor variable
+
+    try:  # ChatGPT. Try first
+        conn = get_db_connection()  # ChatGPT. Connect to database
+        cursor = conn.cursor()  # ChatGPT. Create cursor
+
+        # Verify the event belongs to this user
+        cursor.execute(  # ChatGPT. SQL to check the user created the event
+            "SELECT EventID FROM Event WHERE EventID = %s AND UserID = %s",
+            (event_id, user_id)
+        )
+        if not cursor.fetchone():  # ChatGPT. If event not found
+            return jsonify({"ok": False, "error": "Event not found."}), 404  # ChatGPT. Return error
+
+        # Update the Event table
+        cursor.execute(  # ChatGPT. SQL to update event
+            """
+            UPDATE Event
+            SET Name = %s, Color = %s, Note = %s, Start = %s, End = %s, EventType = %s
+            WHERE EventID = %s AND UserID = %s
+            """,
+            (name, color, note, start, end, pattern_type, event_id, user_id)
+        ) # ChatGPT. Changes every field stored on the event to the new data
+
+        # Delete old cached dates
+        cursor.execute(  # ChatGPT. SQL to delete old cache
+            "DELETE FROM Cache WHERE EventID = %s AND UserID = %s",
+            (event_id, user_id)
+        ) 
+
+        # Delete old prompt if exists
+        cursor.execute(  # ChatGPT. SQL to delete old AI prompt
+            "DELETE FROM Prompt WHERE EventID = %s AND UserID = %s",
+            (event_id, user_id)
+        )
+
+        # Generate new dates or store new prompt
+        if pattern_type == "ai-prompt":  # ChatGPT. If AI prompt type
+            ai_prompt = (payload.get("aiPrompt") or "").strip()  # ChatGPT. Get prompt text
+            if ai_prompt:  # ChatGPT. If there's a prompt
+                cursor.execute(  # ChatGPT. SQL to insert new prompt
+                    """
+                    INSERT INTO Prompt (UserID, EventID, PromptText)
+                    VALUES (%s, %s, %s)
+                    """,
+                    (user_id, event_id, ai_prompt)
+                )
+            dates_count = 0  # ChatGPT. No dates for AI prompt
+        else:  # ChatGPT. For other pattern types
+            dates = generate_dates_for_pattern(payload)  # ChatGPT. Generate and store dates 
+
+            if dates:  # ChatGPT. If dates were generated
+                cache_rows = [(d, event_id, user_id) for d in dates]  # ChatGPT. Create cache rows
+                cursor.executemany(  # ChatGPT. SQL to insert into cache table
+                    """
+                    INSERT INTO Cache (Times, EventID, UserID)
+                    VALUES (%s, %s, %s)
+                    """,
+                    cache_rows
+                ) # ChatGPT. Adds data from the cacherows variable
+            dates_count = len(dates) if dates else 0  # ChatGPT. Count dates
+
+        conn.commit()  # ChatGPT. Save changes
+
+        return jsonify({  # ChatGPT. Return success
+            "ok": True,
+            "eventId": event_id,
+            "patternType": pattern_type,
+            "datesInserted": dates_count
+        }), 200 # ChatGPT. Sends event id, type and the amount of dates changed
+
+    except Error as e:  # ChatGPT. If error
+        if conn:  # ChatGPT. If connection exists
+            conn.rollback()  # ChatGPT. Rollback changes
+        print("Database error in update_event:", e)  # ChatGPT. Print error
+        return jsonify({"ok": False, "error": "Database error."}), 500  # ChatGPT. Return error to front end
+
+    except Exception as e:  # ChatGPT. If unexpected error
+        if conn:  # ChatGPT. If connection exists
+            conn.rollback()  # ChatGPT. Rollback changes
+        print("Unexpected error in update_event:", e)  # ChatGPT. Print error
+        return jsonify({"ok": False, "error": "Server error."}), 500  # ChatGPT. Return error to front end
+
+    finally:  # ChatGPT. After everything
+        if cursor is not None:  # ChatGPT. If cursor exists
+            cursor.close()  # ChatGPT. Close cursor
+        if conn is not None:  # ChatGPT. If connection exists
+            conn.close()  # ChatGPT. Close connection
 
 
 if __name__ == "__main__": # ChatGPT. If the module is running
