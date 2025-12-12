@@ -801,6 +801,7 @@ function ShowRibbon() { // ChatGPT. Function to unhide the ribbon
             notesPlaceholder.style.display = 'block'; // ChatGPT. Show placeholder
             notesDisplay.style.display = 'none'; // ChatGPT. Hide display
           } 
+          window.refreshCalendar(); // ChatGPT. Refresh calendar to clear event dots
           renderPatternList(); // ChatGPT. Load the list again
         } else { // ChatGPT. otherwise
           alert(data.error || 'Failed to delete event.'); // ChatGPT. Event deletion failed
