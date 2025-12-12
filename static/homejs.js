@@ -505,7 +505,7 @@ document.addEventListener("DOMContentLoaded", function () { // ChatGPT. Runs fun
         
         alert(`Event "${payload.name}" created successfully with ${data.datesInserted} dates!`); // ChatGPT. Alert that shows how many dates were affected
         
-        window.location.href = "/";
+        window.location.href = "/"; // Copied from previous ChatGPT code. Redirect to home
         // Optionally reset the form
         form.reset(); // ChatGPT. Clears inputs
         
